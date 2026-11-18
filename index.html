@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="bn">
 <head>
 <meta charset="utf-8">
@@ -6,528 +6,605 @@
 <title>গবেষণা দক্ষতা যাচাই</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Tiro+Bangla&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Hind+Siliguri:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#F6F7F4; --surface:#FFFFFF; --ink:#1B2230; --muted:#5E6675; --line:#DCE0E5;
-  --primary:#2B3A86; --primary-ink:#FFFFFF; --primary-soft:#E7EAF7;
-  --mark:#D99A00; --mark-soft:#FBF0D2; --ok:#2F7A4F; --bad:#B23A3A;
-  --l0:#E9ECF2; --l1:#C9D1EA; --l2:#8E9BD6; --l3:#2B3A86;
+  --bg:#F3F6F5; --surface:#FFFFFF; --ink:#1B2826; --muted:#5E706C; --line:#D6E0DD;
+  --primary:#0F5C4F; --primary-ink:#FFFFFF; --accent:#C98A12; --warn:#A6402B;
+  --l0:#D9E1DF; --l1:#A8CFC3; --l2:#4F9B89; --l3:#0F5C4F;
+  --focus:#C98A12;
   color-scheme: light;
   box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#12151C; --surface:#1A1F29; --ink:#E7E9EE; --muted:#A3AAB8; --line:#2E3543;
-    --primary:#8F9DF0; --primary-ink:#10131A; --primary-soft:#232A45;
-    --mark:#F2BE3D; --mark-soft:#3A3120; --ok:#6CC08F; --bad:#E58080;
-    --l0:#252B37; --l1:#33406B; --l2:#5565B8; --l3:#8F9DF0;
+    --bg:#0F1716; --surface:#172220; --ink:#E4ECEA; --muted:#9AAFAA; --line:#2A3A37;
+    --primary:#5FB8A2; --primary-ink:#0F1716; --accent:#E3B04B; --warn:#E07A62;
+    --l0:#2A3A37; --l1:#2F6B5D; --l2:#4B9F8B; --l3:#86D3BF; --focus:#E3B04B;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#12151C; --surface:#1A1F29; --ink:#E7E9EE; --muted:#A3AAB8; --line:#2E3543;
-  --primary:#8F9DF0; --primary-ink:#10131A; --primary-soft:#232A45;
-  --mark:#F2BE3D; --mark-soft:#3A3120; --ok:#6CC08F; --bad:#E58080;
-  --l0:#252B37; --l1:#33406B; --l2:#5565B8; --l3:#8F9DF0;
+  --bg:#0F1716; --surface:#172220; --ink:#E4ECEA; --muted:#9AAFAA; --line:#2A3A37;
+  --primary:#5FB8A2; --primary-ink:#0F1716; --accent:#E3B04B; --warn:#E07A62;
+  --l0:#2A3A37; --l1:#2F6B5D; --l2:#4B9F8B; --l3:#86D3BF; --focus:#E3B04B;
   color-scheme: dark;
 }
 *,*::before,*::after{box-sizing:inherit}
-html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)}
-body{margin:0;background:var(--bg);color:var(--ink);
-  font-family:"Hind Siliguri","Noto Sans Bengali","Kohinoor Bangla","Nirmala UI",sans-serif;
-  font-size:17px;line-height:1.65}
-h1,h2,h3{font-family:"Tiro Bangla","Noto Serif Bengali","Hind Siliguri",serif;font-weight:400;line-height:1.3;margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.65 "Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif}
+h1,h2,h3{font-family:"Tiro Bangla","Noto Serif Bengali",serif;font-weight:400;line-height:1.3;margin:0}
 h1{font-size:2rem}
 h2{font-size:1.45rem}
 h3{font-size:1.15rem}
-p{margin:.5rem 0}
-.wrap{max-width:720px;margin:0 auto;padding:1.25rem 1rem 4rem}
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
-.bar-in{max-width:720px;margin:0 auto;padding:.6rem 1rem;display:flex;align-items:center;gap:1rem}
-.bar-title{font-family:"Tiro Bangla",serif;font-size:1.05rem;flex:1}
-.steps{display:flex;gap:.35rem}
-.steps span{width:28px;height:4px;border-radius:2px;background:var(--line)}
-.steps span.on{background:var(--primary)}
-.muted{color:var(--muted)}
-.small{font-size:.9rem}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.1rem;margin:1rem 0}
-.q{margin:1.4rem 0}
-.q-t{font-weight:600;margin-bottom:.5rem}
-.opts{display:flex;flex-direction:column;gap:.4rem}
-.opt{display:flex;gap:.6rem;align-items:flex-start;padding:.55rem .7rem;border:1px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer}
-.opt input{margin-top:.35rem;accent-color:var(--primary)}
-.opt:has(input:checked){border-color:var(--primary);background:var(--primary-soft)}
-.opt.dk{color:var(--muted)}
-.chips{display:flex;flex-wrap:wrap;gap:.4rem}
-.chips .opt{flex:0 1 auto}
-.scale{display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;margin-top:.35rem}
-.scale label{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;padding:.45rem .2rem;border:1px solid var(--line);border-radius:8px;cursor:pointer;background:var(--surface);text-align:center;line-height:1.2}
-.scale label b{font-size:1.1rem;font-weight:600}
-.scale label small{font-size:.72rem;color:var(--muted)}
-.scale input{position:absolute;opacity:0;pointer-events:none}
-.scale label:has(input:checked){background:var(--primary);border-color:var(--primary);color:var(--primary-ink)}
-.scale label:has(input:checked) small{color:var(--primary-ink)}
-.scale label:has(input:focus-visible),.opt:has(input:focus-visible){outline:2px solid var(--mark);outline-offset:2px}
-.dom-h{margin-top:2rem;padding-bottom:.3rem;border-bottom:1px solid var(--line);color:var(--muted);font-size:.95rem}
-.item{margin:1rem 0 1.3rem}
-input[type=text],textarea{width:100%;font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.55rem .7rem}
-input[type=text]:focus,textarea:focus{outline:2px solid var(--primary);outline-offset:1px}
-blockquote{margin:.6rem 0;padding:.7rem .9rem;border-left:3px solid var(--primary);background:var(--surface);font-family:Georgia,"Times New Roman",serif;font-size:1rem}
-.btns{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.6rem}
-button{font:inherit;cursor:pointer;border-radius:8px;padding:.6rem 1.2rem;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
-button.pri{background:var(--primary);border-color:var(--primary);color:var(--primary-ink);font-weight:600}
+p{margin:.5em 0}
+.wrap{max-width:860px;margin:0 auto;padding:24px 18px 64px}
+header.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px;max-width:860px;margin:0 auto}
+.brand{font-family:"Tiro Bangla",serif;font-size:1.1rem}
+.who{font-size:.9rem;color:var(--muted);display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+button,.btn{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--primary);background:var(--primary);color:var(--primary-ink);padding:10px 18px}
+button.ghost{background:transparent;color:var(--primary)}
+button.small{padding:4px 10px;font-size:.88rem}
 button:disabled{opacity:.5;cursor:not-allowed}
-button:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
-button.link{border:none;background:none;color:var(--bad);padding:.6rem .2rem;text-decoration:underline}
-.err{color:var(--bad);font-weight:500;margin-top:.8rem}
-.note{background:var(--mark-soft);border-radius:8px;padding:.7rem .9rem;margin:1rem 0}
-/* ladder */
-.ladder{margin:1rem 0}
-.lrow{display:grid;grid-template-columns:minmax(120px,1.1fr) 3fr;gap:.6rem;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--line)}
-.lname{font-weight:500;line-height:1.3}
-.lname small{display:block;color:var(--muted);font-weight:400;font-size:.75rem}
-.lcells{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
-.lc{height:34px;border-radius:5px;background:var(--l0);position:relative;display:flex;align-items:center;justify-content:center;font-size:.72rem;color:var(--muted)}
-.lc.fill1{background:var(--l1)} .lc.fill2{background:var(--l2);color:var(--primary-ink)} .lc.fill3{background:var(--l3);color:var(--primary-ink)}
-.lc.me{outline:2.5px solid var(--mark);outline-offset:1px;font-weight:600;color:var(--ink)}
-.lc.me.fill2,.lc.me.fill3{color:var(--primary-ink)}
-.lhead{display:grid;grid-template-columns:minmax(120px,1.1fr) 3fr;gap:.6rem;font-size:.75rem;color:var(--muted)}
-.lhead .lcells{text-align:center}
-.lhead .lcells span{display:block}
-.board{list-style:none;margin:.6rem 0 0;padding:0;max-height:360px;overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
-.board li{display:flex;gap:.8rem;align-items:center;padding:.4rem .8rem;border-bottom:1px solid var(--line)}
-.board li:last-child{border-bottom:none}
-.board .rk{width:2.5rem;color:var(--muted);font-variant-numeric:tabular-nums}
-.board .bw{flex:1;height:8px;background:var(--l0);border-radius:4px;overflow:hidden}
-.board .bw i{display:block;height:100%;background:var(--l2)}
-.board .pc{width:3.5rem;text-align:right;font-variant-numeric:tabular-nums}
-.board li.me{background:var(--mark-soft);font-weight:600}
-.board li.me .bw i{background:var(--mark)}
-.qgrid{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem}
-.qgrid span{width:2.3rem;height:2.3rem;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.85rem;border:1px solid var(--line)}
-.qgrid .y{background:var(--ok);color:#fff;border-color:var(--ok)}
-.qgrid .n{background:transparent;color:var(--bad);border-color:var(--bad)}
-.tbl-wrap{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:.9rem}
-th,td{border-bottom:1px solid var(--line);padding:.4rem .5rem;text-align:left;white-space:nowrap}
-th{color:var(--muted);font-weight:500}
-ul.recs{padding-left:1.2rem;margin:.4rem 0}
-ul.recs li{margin:.25rem 0}
-@media (max-width:520px){
-  h1{font-size:1.65rem}
-  .lrow,.lhead{grid-template-columns:1fr}
-  .lhead .lname{display:none}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.banner{background:var(--accent);color:#1B1300;padding:8px 18px;font-size:.92rem;text-align:center}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px}
+.hero{padding:40px 0 24px}
+.hero p{max-width:60ch;color:var(--muted)}
+.steps{display:flex;gap:0;margin:22px 0 28px;border-bottom:1px solid var(--line)}
+.steps span{padding:8px 14px;color:var(--muted);border-bottom:3px solid transparent;font-size:.95rem}
+.steps span.on{color:var(--ink);border-color:var(--primary)}
+label.f{display:block;margin:18px 0 6px;font-weight:500}
+input[type=text],input[type=email],select,textarea{font:inherit;width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.checks{display:flex;flex-wrap:wrap;gap:8px 18px}
+.checks label{display:flex;gap:6px;align-items:center}
+.scale-head{display:grid;grid-template-columns:1fr repeat(4,44px);gap:4px;font-size:.8rem;color:var(--muted);position:sticky;top:env(safe-area-inset-top,0px);background:var(--surface);padding:8px 0;z-index:2;border-bottom:1px solid var(--line)}
+.scale-head span{text-align:center}
+.domain-title{margin:22px 0 4px;color:var(--primary);font-weight:600;font-size:.95rem}
+.srow{display:grid;grid-template-columns:1fr repeat(4,44px);gap:4px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.srow label.opt{display:flex;justify-content:center;cursor:pointer}
+.srow input{width:20px;height:20px;accent-color:var(--primary)}
+.legend{font-size:.9rem;color:var(--muted)}
+.mcq{padding:16px 0;border-bottom:1px solid var(--line)}
+.mcq .q{font-weight:500;margin-bottom:8px}
+.mcq label{display:flex;gap:10px;align-items:flex-start;padding:6px 8px;border-radius:6px;cursor:pointer}
+.mcq label:hover{background:var(--bg)}
+.mcq input{margin-top:6px;accent-color:var(--primary)}
+blockquote{margin:10px 0;padding:10px 14px;border-left:3px solid var(--accent);background:var(--bg);font-family:Georgia,serif;font-size:.98rem}
+.nav{display:flex;justify-content:space-between;margin-top:26px;gap:10px}
+.err{color:var(--warn);font-size:.92rem;margin-top:10px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:8px 0 22px;overflow-x:auto}
+.tabs button{background:transparent;color:var(--muted);border:none;border-bottom:3px solid transparent;border-radius:0;padding:10px 14px;white-space:nowrap}
+.tabs button.on{color:var(--ink);border-color:var(--primary)}
+.lead{font-size:1.15rem;max-width:62ch}
+.lead b{font-weight:600}
+/* level ladder */
+.ladder{display:grid;grid-template-columns:minmax(150px,1.4fr) repeat(4,minmax(46px,1fr)) 54px;gap:4px 4px;align-items:center;margin-top:18px}
+.ladder .h{font-size:.8rem;color:var(--muted);text-align:center;padding-bottom:4px}
+.ladder .h.left{text-align:left}
+.ladder .name{font-size:.95rem;padding-right:8px}
+.ladder .name small{display:block;color:var(--warn);font-size:.78rem}
+.ladder .cell{height:26px;border-radius:4px;border:1px dashed var(--line)}
+.ladder .cell.f0{background:var(--l0);border-color:transparent}
+.ladder .cell.f1{background:var(--l1);border-color:transparent}.ladder .cell.f2{background:var(--l2);border-color:transparent}.ladder .cell.f3{background:var(--l3);border-color:transparent}
+.ladder .score{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);font-size:.92rem}
+.ladder-wrap{overflow-x:auto}
+.chip{display:inline-block;padding:1px 10px;border-radius:999px;font-size:.85rem;border:1px solid var(--line)}
+.chip.l0{background:var(--l0);color:var(--ink)}.chip.l1{background:var(--l1);color:#0F2A24}.chip.l2{background:var(--l2);color:#fff}.chip.l3{background:var(--l3);color:var(--primary-ink)}
+.next li{margin:6px 0}
+.lb{width:100%;border-collapse:collapse}
+.lb td,.lb th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;font-size:.95rem}
+.lb th{color:var(--muted);font-weight:500;font-size:.85rem}
+.lb tr.me{background:color-mix(in srgb,var(--accent) 18%,transparent)}
+.bar{height:10px;border-radius:5px;background:var(--l0);position:relative;min-width:80px}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--primary)}
+.note{font-size:.88rem;color:var(--muted)}
+.dist{display:grid;grid-template-columns:minmax(140px,1.2fr) 3fr 46px;gap:6px 10px;align-items:center;margin-top:14px}
+.stack{display:flex;height:22px;border-radius:4px;overflow:hidden;background:var(--l0)}
+.stack span{display:block;height:100%}
+.keyrow{display:flex;gap:14px;flex-wrap:wrap;font-size:.85rem;color:var(--muted);margin-top:10px}
+.keyrow i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.scroll{overflow-x:auto}
+.admin td{white-space:nowrap}
+.center{text-align:center}
+@media (max-width:560px){
+  h1{font-size:1.6rem}
+  .scale-head,.srow{grid-template-columns:1fr repeat(4,34px)}
+  .ladder{grid-template-columns:minmax(120px,1.4fr) repeat(4,minmax(30px,1fr)) 44px}
 }
 @media (prefers-reduced-motion:no-preference){
-  .lc.me{animation:pop .5s ease-out both}
-  @keyframes pop{from{transform:scale(.85)}to{transform:scale(1)}}
+  .ladder .cell{transition:background .4s}
 }
 </style>
 </head>
 <body>
-<div class="bar"><div class="bar-in"><div class="bar-title">গবেষণা দক্ষতা যাচাই</div><div class="steps" id="steps" aria-hidden="true"></div></div></div>
-<main class="wrap" id="app"><p class="muted">লোড হচ্ছে…</p></main>
+<div id="banner"></div>
+<header class="top">
+  <div class="brand">গবেষণা দক্ষতা যাচাই</div>
+  <div class="who" id="who"></div>
+</header>
+<main class="wrap" id="app"><p class="note">লোড হচ্ছে…</p></main>
 
-<script>
-(function(){
-"use strict";
-var BN = "০১২৩৪৫৬৭৮৯";
-function bn(x){ return String(x).replace(/[0-9]/g, function(d){ return BN[+d]; }); }
-
-var DOMAINS = ["ভাষা","শাস্ত্রীয় গবেষণা","গবেষণার ভিত্তি","কোয়ালিটেটিভ","কোয়ান্টিটেটিভ","ডিজিটাল ও এআই","লেখা ও প্রকাশনা","নৈতিকতা ও পেশাদারিত্ব","বিজ্ঞান সাক্ষরতা"];
-var LEVELS = ["ভিত্তি","বিকাশমান","স্বনির্ভর","অগ্রসর"];
-var LEVEL_DESC = ["মৌলিক প্রশিক্ষণ দরকার","তত্ত্বাবধানে কাজ করতে পারেন","নিজে কাজ করতে পারেন","অন্যকে শেখাতে পারেন"];
-var SCALE = [["০","পারি না"],["১","সাহায্য নিয়ে"],["২","নিজে পারি"],["৩","শেখাতে পারি"]];
-
-var SELF = [
- [0,"অভিধান ছাড়া ক্লাসিক্যাল আরবি গ্রন্থ পড়ে বুঝতে"],
- [0,"একটি ইংরেজি গবেষণা প্রবন্ধ পড়ে এর পদ্ধতি ও ফলাফল বুঝতে"],
- [1,"হাদিসের তাখরিজ করে সনদের মান যাচাই করতে"],
- [1,"মূল উৎস থেকে বিভিন্ন মাজহাবের মত দলিলসহ তুলনা করতে"],
- [2,"একটি বিষয় থেকে স্পষ্ট, উত্তরযোগ্য গবেষণা প্রশ্ন তৈরি করতে"],
- [2,"আগের গবেষণা খুঁজে সাহিত্য পর্যালোচনা লিখতে"],
- [2,"সঠিক নিয়মে (যেমন APA) রেফারেন্স ও সাইটেশন দিতে"],
- [3,"সাক্ষাৎকার বা FGD পরিচালনা করতে"],
- [3,"সাক্ষাৎকারের লেখা থেকে কোড ও থিম বের করতে"],
- [4,"জরিপের প্রশ্নপত্র তৈরি করতে"],
- [4,"SPSS, Stata বা R দিয়ে ডেটা বিশ্লেষণ করতে"],
- [4,"p-value ও কনফিডেন্স ইন্টারভালের অর্থ ব্যাখ্যা করতে"],
- [5,"Excel বা Google Sheets-এ ডেটা সাজাতে ও সূত্র ব্যবহার করতে"],
- [5,"এআই-এর দেওয়া তথ্য, রেফারেন্স বা হাদিস মূল উৎসে মিলিয়ে যাচাই করতে"],
- [6,"ভূমিকা-পদ্ধতি-ফলাফল-আলোচনা কাঠামোয় গবেষণা প্রবন্ধ লিখতে"],
- [6,"রিভিউয়ারের মন্তব্যের জবাব দিয়ে প্রবন্ধ সংশোধন করতে"],
- [7,"সম্মতি, গোপনীয়তা ও চৌর্যবৃত্তির নিয়ম মেনে গবেষণা করতে"],
- [7,"নির্ধারিত সময়সীমার মধ্যে কাজ জমা দিতে"],
- [8,"স্বাস্থ্য বা বিজ্ঞান বিষয়ক কোনো দাবি গবেষণা-প্রমাণভিত্তিক কি না বিচার করতে"]
-];
-
-var PASSAGE = "A survey of 400 mothers found that those who visited a health worker at least four times during pregnancy breastfed exclusively more often (64%) than those with fewer visits (41%). Mothers with more visits were also more educated.";
-// a = correct index, f = difficulty (e/m/h), d = domains
-var MCQ = [
- {q:"Which statement is best supported by the passage?", o:["Health worker visits caused more breastfeeding.","More educated mothers visited health workers less often.","The difference may be partly explained by education.","Most mothers in the survey were highly educated."], a:2, f:"m", d:[0,2], passage:true},
- {q:"একটি এলাকায় বাল্যবিবাহের হার ২০% থেকে বেড়ে ২৫% হয়েছে। কোন বর্ণনাটি সঠিক?", o:["হার ৫ শতাংশ পয়েন্ট বেড়েছে, যা আগের হারের তুলনায় ২৫% বৃদ্ধি","হার ৫% বেড়েছে; অন্য কোনো বর্ণনা ঠিক নয়","হার ২৫% বেড়েছে, তাই নতুন হার ৪৫%","হার ৫ গুণ বেড়েছে"], a:0, f:"m", d:[4]},
- {q:"পাঁচজনের বয়স ২০, ২২, ২৫, ২৫, ৫৮। দলের সাধারণ বয়স বোঝাতে কোনটি বেশি উপযুক্ত?", o:["গড় (৩০), কারণ এটি সব মান হিসাবে নেয়","মধ্যমা (২৫), কারণ ৫৮ একটি ব্যতিক্রমী মান","সর্বোচ্চ মান (৫৮)","দুটিই সমান উপযুক্ত"], a:1, f:"e", d:[4]},
- {q:"মাদরাসা ক-তে ১২০ জনের মধ্যে ৩০ জন, আর মাদরাসা খ-তে ৫০ জনের মধ্যে ২০ জন একটি সমস্যার কথা জানিয়েছে। কোথায় সমস্যার হার বেশি?", o:["মাদরাসা ক, কারণ সেখানে ৩০ জন জানিয়েছে","দুটিতে সমান","বলা সম্ভব নয়","মাদরাসা খ"], a:3, f:"e", d:[4]},
- {q:"\u201Cযেসব এলাকায় মসজিদ বেশি, সেখানে অপরাধ কম; অতএব মসজিদ অপরাধ কমায়।\u201D এই সিদ্ধান্তের প্রধান দুর্বলতা কী?", o:["মসজিদের সংখ্যা গোনা কঠিন","সহসম্পর্ক মানেই কার্যকারণ নয়; আয়, শিক্ষার মতো অন্য কারণ থাকতে পারে","অপরাধের সংজ্ঞা দেওয়া হয়নি","কোনো দুর্বলতা নেই"], a:1, f:"e", d:[2]},
- {q:"কোনটি সবচেয়ে ভালো গবেষণা প্রশ্ন?", o:["বাংলাদেশের যুবসমাজের অবস্থা কেমন?","মাদরাসা শিক্ষা কি ভালো?","ঢাকার ১৮-২৫ বছর বয়সী কওমি মাদরাসা ছাত্ররা দিনে গড়ে কত ঘণ্টা স্মার্টফোন ব্যবহার করে?","প্রযুক্তি সমাজকে কীভাবে বদলাচ্ছে?"], a:2, f:"e", d:[2]},
- {q:"জরিপ প্রশ্ন: \u201Cআপনি কি নিয়মিত নামাজ পড়েন এবং কুরআন তিলাওয়াত করেন?\u201D প্রধান সমস্যা কী?", o:["এক প্রশ্নে দুটি বিষয় জিজ্ঞেস করা হয়েছে","প্রশ্নটি হ্যাঁ/না ধরনের","প্রশ্নটি খুব ছোট","কোনো সমস্যা নেই"], a:0, f:"m", d:[4]},
- {q:"একজন গবেষক ফেসবুকে অনলাইন জরিপ দিয়ে ২০০০টি উত্তর পেয়ে লিখেছেন, \u201Cবাংলাদেশের ৮০% মানুষ এই মত পোষণ করেন।\u201D প্রধান সমস্যা কী?", o:["২০০০ জনের নমুনা যথেষ্ট বড় নয়","অনলাইন জরিপ কখনো নির্ভরযোগ্য নয়","৮০% হিসাবে ভুল আছে","ফেসবুকে থাকা ও নিজে থেকে উত্তর দেওয়া মানুষ দেশের সব মানুষের প্রতিনিধি নন"], a:3, f:"m", d:[2]},
- {q:"মাদরাসায় শৃঙ্খলা নিয়ে গভীর সাক্ষাৎকারে কোন প্রশ্নটি সবচেয়ে উপযুক্ত?", o:["আপনি কি মনে করেন না যে মারধর ছাত্রদের ক্ষতি করে?","মাদরাসায় শৃঙ্খলা রক্ষা নিয়ে আপনার অভিজ্ঞতা বলুন।","আপনি কি মারধর সমর্থন করেন, হ্যাঁ বা না?","১ থেকে ৫ স্কেলে মারধর কতটা খারাপ?"], a:1, f:"m", d:[3]},
- {q:"দুই দলের পার্থক্যের পরীক্ষায় p-value = ০.০৩ পাওয়া গেছে। এর সঠিক ব্যাখ্যা কোনটি?", o:["ফলাফলটি ৯৭% সত্য","পার্থক্যটি অবশ্যই বড় ও বাস্তবে গুরুত্বপূর্ণ","আসলে কোনো পার্থক্য না থাকলে, এত বা এর চেয়ে বড় পার্থক্য পাওয়ার সম্ভাবনা ৩%","৩% অংশগ্রহণকারী ভিন্ন উত্তর দিয়েছেন"], a:2, f:"h", d:[4]},
- {q:"একটি নতুন পুষ্টি কর্মসূচি শিশুর ওজন বাড়ায় কি না, তা সবচেয়ে নির্ভরযোগ্যভাবে জানার নকশা কোনটি?", o:["শিশুদের দৈবচয়নে দুই দলে ভাগ করে একদলকে কর্মসূচি দিয়ে তুলনা করা","কর্মসূচির আগে ও পরে একই শিশুদের ওজন মাপা","যারা নিজে থেকে যোগ দিয়েছে আর যারা দেয়নি, তাদের তুলনা করা","অংশ নেওয়া মায়েদের মতামত নেওয়া"], a:0, f:"h", d:[8]},
- {q:"কোনো মাসআলায় চার মাজহাবের মত ও দলিল তুলনা করতে শুরুতে কোন ধরনের গ্রন্থ সবচেয়ে উপযোগী?", o:["একটি মাজহাবের ফতোয়া সংকলন","তুলনামূলক ফিকহের গ্রন্থ (যেমন আল-মুগনি, বিদায়াতুল মুজতাহিদ)","জনপ্রিয় ইসলামি ওয়েবসাইট","সমকালীন বয়ানের সংকলন"], a:1, f:"m", d:[1]},
- {q:"এআই একটি হাদিস দিয়ে লিখেছে \u201Cসহিহ বুখারি, হাদিস নং ...\u201D। গবেষণায় ব্যবহারের আগে সঠিক পদক্ষেপ কোনটি?", o:["এআই সাধারণত ঠিক বলে, সরাসরি ব্যবহার করা","এআই-কেই আবার জিজ্ঞেস করা হাদিসটি সঠিক কি না","কয়েকটি ওয়েবসাইটে পাওয়া গেলে ব্যবহার করা","মূল কিতাব বা শামেলায় নম্বর ও শব্দ মিলিয়ে দেখা এবং সনদের মান যাচাই করা"], a:3, f:"e", d:[1,5]},
- {q:"এআই একটি গবেষণা প্রবন্ধের নাম, লেখক ও একটি পরিসংখ্যান দিয়েছে। কোনটি সবচেয়ে নির্ভরযোগ্য যাচাই?", o:["এআই-কে উৎসের লিংক দিতে বলা","প্রবন্ধের নাম বিশ্বাসযোগ্য মনে হলে ব্যবহার করা","Google Scholar বা DOI দিয়ে মূল প্রবন্ধ খুঁজে পরিসংখ্যানটি নিজে মিলিয়ে দেখা","অন্য একটি এআই টুলে জিজ্ঞেস করা"], a:2, f:"m", d:[5]}
-];
-var LETTERS = ["ক","খ","গ","ঘ"];
-var DK = 4; // "জানি না"
-var PTS = {e:1,m:2,h:3};
-var MAXPTS = MCQ.reduce(function(s,m){return s+PTS[m.f];},0);
-
-var STREAMS = ["কওমি","আলিয়া","জেনারেল"];
-var GROUPS = ["বিজ্ঞান","মানবিক","ব্যবসায় শিক্ষা","প্রযোজ্য নয়"];
-var TRACKS = ["শাস্ত্রীয়","কোয়ালিটেটিভ","কোয়ান্টিটেটিভ","মিশ্র","এখনো নিশ্চিত নই"];
-var HOURS = ["৫-এর কম","৫-১০","১০-২০","২০-এর বেশি"];
-var CORE = [2,5,6,7];
-var TRACK_DOMS = {"শাস্ত্রীয়":[0,1],"কোয়ালিটেটিভ":[3],"কোয়ান্টিটেটিভ":[4,8],"মিশ্র":[3,4,8],"এখনো নিশ্চিত নই":[]};
-var K_MIN = 5;
-
-var S = {
-  db:null, user:null, uid:null, canWrite:null, isOwner:false,
-  step:0, a:{stream:[],degree:"",group:null,exp:null,expText:"",track:null,hours:null},
-  self:new Array(SELF.length).fill(null), mcq:new Array(MCQ.length).fill(null),
-  saved:null, pool:[], poolReady:false, unsubPool:null, busy:false, err:""
+<script type="module">
+/* ============================================================
+   কনফিগারেশন — README.md দেখুন
+   ============================================================ */
+const CONFIG = {
+  // Firebase Console > Project settings > Web app থেকে কপি করুন। খালি থাকলে অ্যাপ ডেমো মোডে চলবে।
+  firebase: {
+    apiKey: "AIzaSyDqGzB55QV2jiZLwBznBoosY5my4vTPPMk",
+    authDomain: "asdri-b6d30.firebaseapp.com",
+    projectId: "asdri-b6d30",
+    appId: "1:879869920695:web:839744f1c47693caa6d432"
+  },
+  // যাদের ইমেইলে অ্যাডমিন ট্যাব দেখাবে (firestore.rules-এও একই ইমেইল দিন)
+  adminEmails: ["hasan.asf.org@gmail.com", "hasanms313@gmail.com"],
+  // প্রতিটি মূল্যায়ন রাউন্ডের আলাদা নাম। প্রশিক্ষণের পরের মূল্যায়নে নতুন নাম দিন।
+  round: "2026-r1",
+  // লিডারবোর্ড ও সারসংক্ষেপ দেখাতে ন্যূনতম কতজন জমা দিতে হবে (পরিচয় সুরক্ষার জন্য)
+  minCohort: 5
 };
-var app = document.getElementById("app");
+const FB_VER = "10.12.2";
 
-function draftKey(){ return "tna-draft-" + (S.uid||"x"); }
-function saveDraft(){ try{ localStorage.setItem(draftKey(), JSON.stringify({a:S.a,self:S.self,mcq:S.mcq,step:S.step})); }catch(e){} }
-function loadDraft(){ try{ var d = JSON.parse(localStorage.getItem(draftKey())||"null"); if(d){ S.a=d.a||S.a; S.self=d.self||S.self; S.mcq=d.mcq||S.mcq; S.step=d.step||0; } }catch(e){} }
-function clearDraft(){ try{ localStorage.removeItem(draftKey()); }catch(e){} }
+/* ============================================================
+   প্রশ্ন ও স্কোরিং
+   ============================================================ */
+const LEVELS = [
+  {name:"প্রস্তুতি", en:"Pre-start", desc:"মৌলিক প্রশিক্ষণ দিয়ে শুরু করতে হবে"},
+  {name:"সূচনা", en:"Start", desc:"তত্ত্বাবধানে কাজ করতে পারেন"},
+  {name:"মধ্যম", en:"Intermediate", desc:"নিজে কাজ করতে পারেন, মাঝে মাঝে পরামর্শ লাগে"},
+  {name:"দক্ষ", en:"Proficient", desc:"স্বাধীনভাবে কাজ করতে ও অন্যকে শেখাতে পারেন"}
+];
 
-function setSteps(n){
-  var el=document.getElementById("steps"); var h="";
-  for(var i=1;i<=4;i++) h+='<span class="'+(i<=n?"on":"")+'"></span>';
-  el.innerHTML = n>0? h : "";
+const DOMAINS = [
+  {id:"d1", name:"ইংরেজি ও একাডেমিক ভাষা", module:"গবেষণার জন্য ইংরেজি পাঠ ও লেখা"},
+  {id:"d2", name:"গবেষণার ভিত্তি", module:"গবেষণা প্রশ্ন, সাহিত্য পর্যালোচনা ও রেফারেন্স ব্যবস্থাপনা"},
+  {id:"d3", name:"গুণগত গবেষণা (Qualitative)", module:"গুণগত পদ্ধতি: সাক্ষাৎকার, দলগত আলোচনা ও থিমভিত্তিক বিশ্লেষণ"},
+  {id:"d4", name:"পরিমাণগত গবেষণা (Quantitative)", module:"পরিমাণগত পদ্ধতি: প্রশ্নপত্র, নমুনায়ন ও মৌলিক পরিসংখ্যান"},
+  {id:"d5", name:"মিশ্র পদ্ধতি (Mixed methods)", module:"মিশ্র পদ্ধতির গবেষণা নকশা"},
+  {id:"d6", name:"ডিজিটাল দক্ষতা ও এআই যাচাই", module:"স্প্রেডশিট, তথ্য অনুসন্ধান ও এআই-এর তথ্য যাচাই"},
+  {id:"d7", name:"বিজ্ঞান ও স্বাস্থ্য সাক্ষরতা", module:"স্বাস্থ্য ও বিজ্ঞান গবেষণা পড়া ও মূল্যায়ন"},
+  {id:"d8", name:"লেখা ও প্রকাশনা", module:"একাডেমিক লেখা ও জার্নালে প্রকাশ"},
+  {id:"d9", name:"নৈতিকতা ও পেশাদারিত্ব", module:"গবেষণা নৈতিকতা ও পেশাগত অভ্যাস"}
+];
+
+const SELF = [
+  {id:"s1", d:"d1", t:"একটি ইংরেজি গবেষণা প্রবন্ধ পড়ে এর পদ্ধতি ও ফলাফল বুঝতে"},
+  {id:"s2", d:"d1", t:"ইংরেজিতে ২০০ শব্দের একটি গোছানো অনুচ্ছেদ লিখতে"},
+  {id:"s3", d:"d2", t:"একটি বিষয় থেকে স্পষ্ট, উত্তরযোগ্য গবেষণা প্রশ্ন তৈরি করতে"},
+  {id:"s4", d:"d2", t:"আগের গবেষণা খুঁজে সাহিত্য পর্যালোচনা লিখতে"},
+  {id:"s5", d:"d2", t:"সঠিক নিয়মে (যেমন APA) রেফারেন্স ও সাইটেশন দিতে"},
+  {id:"s6", d:"d3", t:"সাক্ষাৎকার বা দলগত আলোচনা (FGD) পরিচালনা করতে"},
+  {id:"s7", d:"d3", t:"সাক্ষাৎকারের লেখা থেকে কোড ও থিম বের করতে"},
+  {id:"s8", d:"d4", t:"জরিপের প্রশ্নপত্র তৈরি করতে"},
+  {id:"s9", d:"d4", t:"SPSS, Stata বা R দিয়ে ডেটা বিশ্লেষণ করতে"},
+  {id:"s10", d:"d4", t:"p-value ও কনফিডেন্স ইন্টারভালের অর্থ ব্যাখ্যা করতে"},
+  {id:"s11", d:"d5", t:"একই গবেষণায় গুণগত ও পরিমাণগত তথ্য কীভাবে মেলাতে হয়, তার নকশা করতে"},
+  {id:"s12", d:"d6", t:"Excel বা Google Sheets-এ ডেটা সাজাতে ও সূত্র ব্যবহার করতে"},
+  {id:"s13", d:"d6", t:"এআই-এর দেওয়া তথ্য, রেফারেন্স বা হাদিস মূল উৎসে মিলিয়ে যাচাই করতে"},
+  {id:"s14", d:"d7", t:"স্বাস্থ্য বা বিজ্ঞান বিষয়ক কোনো দাবি গবেষণা-প্রমাণভিত্তিক কি না বিচার করতে"},
+  {id:"s15", d:"d8", t:"ভূমিকা-পদ্ধতি-ফলাফল-আলোচনা কাঠামোয় গবেষণা প্রবন্ধ লিখতে"},
+  {id:"s16", d:"d8", t:"রিভিউয়ারের মন্তব্যের জবাব দিয়ে প্রবন্ধ সংশোধন করতে"},
+  {id:"s17", d:"d9", t:"সম্মতি, গোপনীয়তা ও চৌর্যবৃত্তির নিয়ম মেনে গবেষণা করতে"},
+  {id:"s18", d:"d9", t:"নির্ধারিত সময়সীমার মধ্যে কাজ জমা দিতে"}
+];
+
+const PASSAGE = "A survey of 400 mothers found that those who visited a health worker at least four times during pregnancy breastfed exclusively more often (64%) than those with fewer visits (41%). Mothers with more visits were also more educated.";
+
+// c = সঠিক অপশনের সূচক (০ থেকে), diff: 1 সহজ, 2 মাঝারি, 3 কঠিন
+const MCQ = [
+  {id:"q1", d:"d1", diff:2, passage:true, q:"Which statement is best supported by the passage?",
+   o:["Health worker visits caused more breastfeeding.","More educated mothers visited health workers less often.","The difference may be partly explained by education.","Most mothers in the survey were highly educated."], c:2},
+  {id:"q2", d:"d4", diff:2, q:"একটি এলাকায় বাল্যবিবাহের হার ২০% থেকে বেড়ে ২৫% হয়েছে। কোন বর্ণনাটি সঠিক?",
+   o:["হার ৫ শতাংশ পয়েন্ট বেড়েছে, যা আগের হারের তুলনায় ২৫% বৃদ্ধি","হার ৫% বেড়েছে; অন্য কোনো বর্ণনা ঠিক নয়","হার ২৫% বেড়েছে, তাই নতুন হার ৪৫%","হার ৫ গুণ বেড়েছে"], c:0},
+  {id:"q3", d:"d4", diff:1, q:"পাঁচজনের বয়স ২০, ২২, ২৫, ২৫, ৫৮। দলের সাধারণ বয়স বোঝাতে কোনটি বেশি উপযুক্ত?",
+   o:["গড় (৩০), কারণ এটি সব মান হিসাবে নেয়","মধ্যমা (২৫), কারণ ৫৮ একটি ব্যতিক্রমী মান","সর্বোচ্চ মান (৫৮)","দুটিই সমান উপযুক্ত"], c:1},
+  {id:"q4", d:"d4", diff:1, q:"মাদরাসা ক-তে ১২০ জনের মধ্যে ৩০ জন, আর মাদরাসা খ-তে ৫০ জনের মধ্যে ২০ জন একটি সমস্যার কথা জানিয়েছে। কোথায় সমস্যার হার বেশি?",
+   o:["মাদরাসা ক, কারণ সেখানে ৩০ জন জানিয়েছে","দুটিতে সমান","বলা সম্ভব নয়","মাদরাসা খ"], c:3},
+  {id:"q5", d:"d2", diff:1, q:"\"যেসব এলাকায় মসজিদ বেশি, সেখানে অপরাধ কম; অতএব মসজিদ অপরাধ কমায়।\" এই সিদ্ধান্তের প্রধান দুর্বলতা কী?",
+   o:["মসজিদের সংখ্যা গোনা কঠিন","সহসম্পর্ক মানেই কার্যকারণ নয়; আয়, শিক্ষার মতো অন্য কারণ থাকতে পারে","অপরাধের সংজ্ঞা দেওয়া হয়নি","কোনো দুর্বলতা নেই"], c:1},
+  {id:"q6", d:"d2", diff:1, q:"কোনটি সবচেয়ে ভালো গবেষণা প্রশ্ন?",
+   o:["বাংলাদেশের যুবসমাজের অবস্থা কেমন?","মাদরাসা শিক্ষা কি ভালো?","ঢাকার ১৮-২৫ বছর বয়সী কওমি মাদরাসা ছাত্ররা দিনে গড়ে কত ঘণ্টা স্মার্টফোন ব্যবহার করে?","প্রযুক্তি সমাজকে কীভাবে বদলাচ্ছে?"], c:2},
+  {id:"q7", d:"d4", diff:2, q:"জরিপ প্রশ্ন: \"আপনি কি নিয়মিত নামাজ পড়েন এবং কুরআন তিলাওয়াত করেন?\" প্রধান সমস্যা কী?",
+   o:["এক প্রশ্নে দুটি বিষয় জিজ্ঞেস করা হয়েছে","প্রশ্নটি হ্যাঁ/না ধরনের","প্রশ্নটি খুব ছোট","কোনো সমস্যা নেই"], c:0},
+  {id:"q8", d:"d4", diff:2, q:"একজন গবেষক ফেসবুকে অনলাইন জরিপ দিয়ে ২০০০টি উত্তর পেয়ে লিখেছেন, \"বাংলাদেশের ৮০% মানুষ এই মত পোষণ করেন।\" প্রধান সমস্যা কী?",
+   o:["২০০০ জনের নমুনা যথেষ্ট বড় নয়","অনলাইন জরিপ কখনো নির্ভরযোগ্য নয়","৮০% হিসাবে ভুল আছে","ফেসবুকে থাকা ও নিজে থেকে উত্তর দেওয়া মানুষ দেশের সব মানুষের প্রতিনিধি নন"], c:3},
+  {id:"q9", d:"d3", diff:2, q:"মাদরাসায় শৃঙ্খলা নিয়ে গভীর সাক্ষাৎকারে কোন প্রশ্নটি সবচেয়ে উপযুক্ত?",
+   o:["আপনি কি মনে করেন না যে মারধর ছাত্রদের ক্ষতি করে?","মাদরাসায় শৃঙ্খলা রক্ষা নিয়ে আপনার অভিজ্ঞতা বলুন।","আপনি কি মারধর সমর্থন করেন, হ্যাঁ বা না?","১ থেকে ৫ স্কেলে মারধর কতটা খারাপ?"], c:1},
+  {id:"q10", d:"d4", diff:3, q:"দুই দলের পার্থক্যের পরীক্ষায় p-value = ০.০৩ পাওয়া গেছে। এর সঠিক ব্যাখ্যা কোনটি?",
+   o:["ফলাফলটি ৯৭% সত্য","পার্থক্যটি অবশ্যই বড় ও বাস্তবে গুরুত্বপূর্ণ","আসলে কোনো পার্থক্য না থাকলে, এত বা এর চেয়ে বড় পার্থক্য পাওয়ার সম্ভাবনা ৩%","৩% অংশগ্রহণকারী ভিন্ন উত্তর দিয়েছেন"], c:2},
+  {id:"q11", d:"d7", diff:3, q:"একটি নতুন পুষ্টি কর্মসূচি শিশুর ওজন বাড়ায় কি না, তা সবচেয়ে নির্ভরযোগ্যভাবে জানার নকশা কোনটি?",
+   o:["শিশুদের দৈবচয়নে দুই দলে ভাগ করে একদলকে কর্মসূচি দিয়ে তুলনা করা","কর্মসূচির আগে ও পরে একই শিশুদের ওজন মাপা","যারা নিজে থেকে যোগ দিয়েছে আর যারা দেয়নি, তাদের তুলনা করা","অংশ নেওয়া মায়েদের মতামত নেওয়া"], c:0},
+  {id:"q12", d:"d5", diff:2, q:"একটি জরিপে দেখা গেল ৬০% ছাত্র ক্লাসে মনোযোগ হারায়। কেন হারায় তা গভীরভাবে বুঝতে পরবর্তী সবচেয়ে উপযুক্ত ধাপ কোনটি?",
+   o:["আরও বড় নমুনায় একই জরিপ আবার করা","কিছু ছাত্রের গভীর সাক্ষাৎকার নিয়ে জরিপের ফলাফল ব্যাখ্যা করা","জরিপের তথ্য বাদ দিয়ে নতুন বিষয়ে গবেষণা শুরু করা","শিক্ষকদের কাছ থেকে ছাত্রদের পরীক্ষার নম্বর নেওয়া"], c:1},
+  {id:"q13", d:"d9", diff:2, q:"হিফজ মাদরাসার ১২ বছর বয়সী ছাত্রদের সাক্ষাৎকার নিতে কী প্রয়োজন?",
+   o:["শুধু মুহতামিমের অনুমতি যথেষ্ট","অভিভাবকের সম্মতি এবং ছাত্রের নিজের সম্মতি, দুটোই","ছাত্র রাজি হলেই যথেষ্ট","নাম প্রকাশ না করলে সম্মতি লাগে না"], c:1},
+  {id:"q14", d:"d6", diff:1, q:"এআই একটি হাদিস দিয়ে লিখেছে \"সহিহ বুখারি, হাদিস নং ...\"। গবেষণায় ব্যবহারের আগে সঠিক পদক্ষেপ কোনটি?",
+   o:["এআই সাধারণত ঠিক বলে, সরাসরি ব্যবহার করা","এআই-কেই আবার জিজ্ঞেস করা হাদিসটি সঠিক কি না","কয়েকটি ওয়েবসাইটে পাওয়া গেলে ব্যবহার করা","মূল কিতাব বা নির্ভরযোগ্য ডেটাবেসে নম্বর ও শব্দ মিলিয়ে দেখা এবং সনদের মান যাচাই করা"], c:3},
+  {id:"q15", d:"d6", diff:2, q:"এআই একটি গবেষণা প্রবন্ধের নাম, লেখক ও একটি পরিসংখ্যান দিয়েছে। কোনটি সবচেয়ে নির্ভরযোগ্য যাচাই?",
+   o:["এআই-কে উৎসের লিংক দিতে বলা","প্রবন্ধের নাম বিশ্বাসযোগ্য মনে হলে ব্যবহার করা","Google Scholar বা DOI দিয়ে মূল প্রবন্ধ খুঁজে পরিসংখ্যানটি নিজে মিলিয়ে দেখা","অন্য একটি এআই টুলে জিজ্ঞেস করা"], c:2},
+  {id:"q16", d:"d8", diff:1, q:"গবেষণা প্রবন্ধের কোন অংশে ফলাফলের ব্যাখ্যা এবং আগের গবেষণার সাথে তুলনা থাকে?",
+   o:["ভূমিকা","পদ্ধতি","ফলাফল","আলোচনা"], c:3}
+];
+
+const INTERESTS = ["গুণগত (Qualitative)","পরিমাণগত (Quantitative)","মিশ্র পদ্ধতি (Mixed methods)","এখনো নিশ্চিত নই"];
+const CORE = ["d1","d2","d6","d8","d9"];
+function relevantDomains(interest){
+  if(interest===INTERESTS[0]) return [...CORE,"d3"];
+  if(interest===INTERESTS[1]) return [...CORE,"d4","d7"];
+  if(interest===INTERESTS[2]) return [...CORE,"d3","d4","d5","d7"];
+  return DOMAINS.map(d=>d.id);
 }
 
-/* ---------- scoring ---------- */
-function score(selfAns, mcqAns, track){
-  var correct = mcqAns.map(function(v,i){ return v===MCQ[i].a; });
-  var pts = 0; MCQ.forEach(function(m,i){ if(correct[i]) pts+=PTS[m.f]; });
-  var levels=[], avgs=[], verified=[];
-  for(var d=0; d<DOMAINS.length; d++){
-    var vals=[]; SELF.forEach(function(it,i){ if(it[0]===d) vals.push(selfAns[i]); });
-    var avg = vals.reduce(function(s,x){return s+x;},0)/vals.length;
-    var lv = avg<1?0: avg<2?1: avg<=2.5?2:3;
-    var qs=[]; MCQ.forEach(function(m,i){ if(m.d.indexOf(d)>=0) qs.push(i); });
-    if(lv>=2 && qs.some(function(i){ return MCQ[i].f!=="h" && !correct[i]; })) lv-=1;
-    if(lv===3 && qs.some(function(i){ return !correct[i]; })) lv=2;
-    levels.push(lv); avgs.push(Math.round(avg*100)/100); verified.push(qs.length>0);
+function levelFromSelf(avg){ return avg<1?0: avg<2?1: avg<=2.5?2:3; }
+function levelFromScore(s){ return s<35?0: s<60?1: s<80?2:3; }
+
+function scoreSubmission(self, answers){
+  const domains = {};
+  for(const d of DOMAINS){
+    const items = SELF.filter(s=>s.d===d.id);
+    const selfAvg = items.reduce((a,s)=>a+Number(self[s.id]),0)/items.length;
+    const qs = MCQ.filter(q=>q.d===d.id);
+    const correct = qs.map(q=>Number(answers[q.id])===q.c);
+    const acc = qs.length? correct.filter(Boolean).length/qs.length : null;
+    const score = Math.round(acc===null ? (selfAvg/3)*100 : ((selfAvg/3)*0.5 + acc*0.5)*100);
+    let level = levelFromScore(score);
+    // দক্ষ স্তর পেতে সংশ্লিষ্ট কঠিন প্রশ্নও সঠিক হতে হবে
+    const hard = qs.filter(q=>q.diff===3);
+    if(level===3 && hard.some(q=>Number(answers[q.id])!==q.c)) level = 2;
+    // নিজের দেওয়া মানের চেয়ে যাচাইয়ের পর স্তর কম হলে চিহ্নিত করা হয়
+    const adjusted = levelFromSelf(selfAvg) > level;
+    domains[d.id] = {selfAvg:Math.round(selfAvg*100)/100, acc, level, adjusted, score};
   }
-  return {pts:pts, pct:Math.round(pts/MAXPTS*100), correct:correct, levels:levels, avgs:avgs, verified:verified, track:track};
+  const overall = Math.round(Object.values(domains).reduce((a,x)=>a+x.score,0)/DOMAINS.length);
+  const correctTotal = MCQ.filter(q=>Number(answers[q.id])===q.c).length;
+  return {domains, overall, level:levelFromScore(overall), correctTotal};
 }
 
-function recs(sc){
-  var need = CORE.slice(); (TRACK_DOMS[sc.track]||[]).forEach(function(d){ if(need.indexOf(d)<0) need.push(d); });
-  var start = need.filter(function(d){ return sc.levels[d]<=1; }).sort(function(x,y){ return sc.levels[x]-sc.levels[y]; });
-  var strong = [];
-  sc.levels.forEach(function(l,d){ if(l>=2) strong.push(d); });
-  strong.sort(function(x,y){ return sc.levels[y]-sc.levels[x]; });
-  return {start:start.slice(0,3), strong:strong.slice(0,3), need:need};
-}
+/* ============================================================
+   সাহায্যকারী ফাংশন
+   ============================================================ */
+const BN = "০১২৩৪৫৬৭৮৯";
+const bn = n => String(n).replace(/\d/g,d=>BN[d]);
+const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+const $ = sel => document.querySelector(sel);
+const app = $("#app");
+function shuffle(a){ a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+const levelColor = i => `var(--l${i})`;
 
-/* ---------- views ---------- */
-function render(){
-  S.err = S.err||"";
-  var v = S.view;
-  if(v==="gate") return renderGate();
-  if(v==="result") return renderResult();
-  if(S.step===0) return renderIntro();
-  if(S.step===1) return renderA();
-  if(S.step===2) return renderB();
-  if(S.step===3) return renderC();
-}
+/* ============================================================
+   ব্যাকএন্ড: Firebase বা ডেমো
+   ============================================================ */
+const useFirebase = !!CONFIG.firebase.apiKey;
+let backend;
 
-function renderGate(){
-  setSteps(0);
-  app.innerHTML = '<h1>গবেষণা দক্ষতা যাচাই</h1>'+
-   '<div class="note"><p>'+S.gateMsg+'</p></div>';
-}
-
-function renderIntro(){
-  setSteps(0);
-  var ro = S.canWrite===false;
-  app.innerHTML =
-   '<h1>গবেষণার কোন দক্ষতা আপনার আছে, আর কোথা থেকে শুরু করবেন</h1>'+
-   '<p>তিনটি ছোট অংশ, সময় লাগবে প্রায় ২০ মিনিট। জমা দেওয়ার সাথে সাথে নয়টি ক্ষেত্রে আপনার লেভেল, প্রশিক্ষণ কোথা থেকে শুরু করবেন, আর সবার মধ্যে আপনার অবস্থান দেখতে পাবেন।</p>'+
-   '<div class="card"><h3>আপনার গোপনীয়তা</h3>'+
-   '<p class="small">আপনার উত্তর ও পূর্ণ ফলাফল শুধু আপনিই দেখতে পাবেন, আয়োজকও নয়। তুলনার তালিকায় কারো নাম বা পরিচয় থাকে না, শুধু নামবিহীন স্কোর। অন্তত '+bn(K_MIN)+' জন জমা দেওয়ার পরই তুলনা দেখানো হয়, যাতে কাউকে আলাদা করে চেনা না যায়। এখানে আপনার নামও জিজ্ঞেস করা হবে না।</p></div>'+
-   '<div class="card"><h3>নিয়ম</h3><p class="small">সৎভাবে উত্তর দিন; বেশি নম্বর দিলে প্রশিক্ষণ ভুল লেভেল থেকে শুরু হবে। যাচাই অংশ ইন্টারনেট বা এআই ছাড়া নিজে করুন। না জানলে \u201Cজানি না\u201D বেছে নিন, এতে কোনো ক্ষতি নেই।</p></div>'+
-   (ro?'<div class="note">আপনার এই লিংকে শুধু দেখার অনুমতি আছে, তাই জমা দেওয়া যাবে না। আয়োজকের কাছে জমা দেওয়ার অনুমতি চেয়ে নিন।</div>':'')+
-   '<div class="btns"><button class="pri" id="go"'+(ro?" disabled":"")+'>শুরু করুন</button></div>';
-  document.getElementById("go").onclick=function(){ S.step=1; saveDraft(); render(); window.scrollTo(0,0); };
-}
-
-function radio(name, opts, sel, cls){
-  return '<div class="'+(cls||"opts")+'">'+opts.map(function(o,i){
-    return '<label class="opt"><input type="radio" name="'+name+'" value="'+i+'"'+(sel===i?" checked":"")+'><span>'+o+'</span></label>';
-  }).join("")+'</div>';
-}
-function check(name, opts, sel){
-  return '<div class="chips">'+opts.map(function(o,i){
-    return '<label class="opt"><input type="checkbox" name="'+name+'" value="'+i+'"'+(sel.indexOf(i)>=0?" checked":"")+'><span>'+o+'</span></label>';
-  }).join("")+'</div>';
-}
-
-function renderA(){
-  setSteps(1);
-  var a=S.a;
-  app.innerHTML =
-   '<p class="muted small">অংশ ১ / ৩</p><h2>আপনার পরিচিতি</h2>'+
-   '<div class="q"><div class="q-t">১. আপনার শিক্ষার ধারা (একাধিক হলে সবগুলো)</div>'+check("stream",STREAMS,a.stream)+'</div>'+
-   '<div class="q"><div class="q-t">২. সর্বোচ্চ সম্পন্ন বা চলমান ডিগ্রি</div><input type="text" id="degree" maxlength="120" placeholder="যেমন: তাকমিল, কামিল, অনার্স ৩য় বর্ষ"></div>'+
-   '<div class="q"><div class="q-t">৩. মাধ্যমিক বা দাখিলে বিভাগ</div>'+radio("group",GROUPS,a.group,"chips")+'</div>'+
-   '<div class="q"><div class="q-t">৪. আগে কোনো গবেষণা, জরিপ বা প্রকাশনার অভিজ্ঞতা আছে?</div>'+radio("exp",["হ্যাঁ","না"],a.exp,"chips")+
-   '<input type="text" id="expText" maxlength="200" placeholder="হ্যাঁ হলে এক লাইনে লিখুন (ঐচ্ছিক)" style="margin-top:.5rem"></div>'+
-   '<div class="q"><div class="q-t">৫. কোন ধরনের গবেষণায় আগ্রহী</div>'+radio("track",TRACKS,a.track===null?null:TRACKS.indexOf(a.track),"chips")+'</div>'+
-   '<div class="q"><div class="q-t">৬. সপ্তাহে কত ঘণ্টা দিতে পারবেন</div>'+radio("hours",HOURS,a.hours,"chips")+'</div>'+
-   '<div class="err" id="err" role="alert"></div>'+
-   '<div class="btns"><button id="back">পেছনে</button><button class="pri" id="next">পরের অংশ</button></div>';
-  document.getElementById("degree").value=a.degree||"";
-  document.getElementById("expText").value=a.expText||"";
-  document.getElementById("back").onclick=function(){ S.step=0; render(); };
-  document.getElementById("next").onclick=function(){
-    a.stream=[].slice.call(document.querySelectorAll('input[name=stream]:checked')).map(function(x){return +x.value;});
-    a.degree=document.getElementById("degree").value.trim();
-    a.expText=document.getElementById("expText").value.trim();
-    var g=document.querySelector('input[name=group]:checked'); a.group=g?+g.value:null;
-    var e=document.querySelector('input[name=exp]:checked'); a.exp=e?+e.value:null;
-    var t=document.querySelector('input[name=track]:checked'); a.track=t?TRACKS[+t.value]:null;
-    var h=document.querySelector('input[name=hours]:checked'); a.hours=h?+h.value:null;
-    var miss=[];
-    if(!a.stream.length) miss.push("১"); if(!a.degree) miss.push("২"); if(a.group===null) miss.push("৩");
-    if(a.exp===null) miss.push("৪"); if(!a.track) miss.push("৫"); if(a.hours===null) miss.push("৬");
-    saveDraft();
-    if(miss.length){ document.getElementById("err").textContent="এই প্রশ্নগুলোর উত্তর দিন: "+miss.join(", "); return; }
-    S.step=2; saveDraft(); render(); window.scrollTo(0,0);
-  };
-}
-
-function renderB(){
-  setSteps(2);
-  var h='<p class="muted small">অংশ ২ / ৩</p><h2>কোন কাজ কতটা পারেন</h2>'+
-   '<p>প্রতিটি কাজে নিজেকে নম্বর দিন। \u201Cকী জানি\u201D নয়, \u201Cকী করতে পারি\u201D তা ভেবে উত্তর দিন।</p>';
-  var last=-1;
-  SELF.forEach(function(it,i){
-    if(it[0]!==last){ h+='<div class="dom-h">'+DOMAINS[it[0]]+'</div>'; last=it[0]; }
-    h+='<div class="item" id="s'+i+'"><div>আমি পারি: '+it[1]+'</div><div class="scale" role="radiogroup" aria-label="'+it[1]+'">'+
-      SCALE.map(function(sc,v){ return '<label><input type="radio" name="self'+i+'" value="'+v+'"'+(S.self[i]===v?" checked":"")+'><b>'+sc[0]+'</b><small>'+sc[1]+'</small></label>'; }).join("")+
-      '</div></div>';
-  });
-  h+='<div class="err" id="err" role="alert"></div><div class="btns"><button id="back">পেছনে</button><button class="pri" id="next">পরের অংশ</button></div>';
-  app.innerHTML=h;
-  app.addEventListener("change", onSelf);
-  document.getElementById("back").onclick=function(){ app.removeEventListener("change", onSelf); S.step=1; render(); window.scrollTo(0,0); };
-  document.getElementById("next").onclick=function(){
-    var miss=[]; S.self.forEach(function(v,i){ if(v===null) miss.push(i); });
-    if(miss.length){ document.getElementById("err").textContent=bn(miss.length)+"টি কাজের নম্বর দেওয়া বাকি।"; document.getElementById("s"+miss[0]).scrollIntoView({block:"center"}); return; }
-    app.removeEventListener("change", onSelf); S.step=3; saveDraft(); render(); window.scrollTo(0,0);
-  };
-}
-function onSelf(e){ var t=e.target; if(t.name && t.name.indexOf("self")===0){ S.self[+t.name.slice(4)]=+t.value; saveDraft(); } }
-
-function renderC(){
-  setSteps(3);
-  var h='<p class="muted small">অংশ ৩ / ৩</p><h2>ছোট যাচাই</h2>'+
-   '<p>১৪টি প্রশ্ন, প্রতিটিতে একটি উত্তর। ইন্টারনেট বা এআই ছাড়া নিজে করুন।</p>';
-  MCQ.forEach(function(m,i){
-    h+='<div class="q" id="m'+i+'">';
-    if(m.passage) h+='<div class="small muted">নিচের অনুচ্ছেদটি পড়ুন:</div><blockquote lang="en">'+PASSAGE+'</blockquote>';
-    h+='<div class="q-t">'+bn(i+1)+'. '+m.q+'</div><div class="opts">'+
-      m.o.map(function(o,j){ return '<label class="opt"><input type="radio" name="mcq'+i+'" value="'+j+'"'+(S.mcq[i]===j?" checked":"")+'><span>'+LETTERS[j]+') '+o+'</span></label>'; }).join("")+
-      '<label class="opt dk"><input type="radio" name="mcq'+i+'" value="'+DK+'"'+(S.mcq[i]===DK?" checked":"")+'><span>জানি না</span></label></div></div>';
-  });
-  h+='<div class="err" id="err" role="alert"></div><div class="btns"><button id="back">পেছনে</button><button class="pri" id="sub">জমা দিন ও ফলাফল দেখুন</button></div>';
-  app.innerHTML=h;
-  app.addEventListener("change", onMcq);
-  document.getElementById("back").onclick=function(){ app.removeEventListener("change", onMcq); S.step=2; render(); window.scrollTo(0,0); };
-  document.getElementById("sub").onclick=function(){
-    var miss=[]; S.mcq.forEach(function(v,i){ if(v===null) miss.push(i); });
-    if(miss.length){ document.getElementById("err").textContent=bn(miss.length)+"টি প্রশ্নের উত্তর বাকি। না জানলে \u201Cজানি না\u201D বেছে নিন।"; document.getElementById("m"+miss[0]).scrollIntoView({block:"center"}); return; }
-    app.removeEventListener("change", onMcq);
-    submit();
-  };
-}
-function onMcq(e){ var t=e.target; if(t.name && t.name.indexOf("mcq")===0){ S.mcq[+t.name.slice(3)]=+t.value; saveDraft(); } }
-
-function randId(){
-  var a=new Uint8Array(12); crypto.getRandomValues(a);
-  return "p"+Array.prototype.map.call(a,function(b){return ("0"+b.toString(16)).slice(-2);}).join("");
-}
-
-function submit(){
-  var btn=document.getElementById("sub"); btn.disabled=true; btn.textContent="জমা হচ্ছে…";
-  var sc = score(S.self, S.mcq, S.a.track);
-  var poolId = (S.saved && S.saved.poolId) || randId();
-  var mine = {v:1, a:S.a, self:S.self, mcq:S.mcq, sc:sc, poolId:poolId, at:new Date().toISOString().slice(0,10)};
-  var pub = {v:1, pct:sc.pct, lv:sc.levels, track:sc.track};
-  S.db.doc("data/users/"+S.uid+"/result").set(mine).then(function(){
-    return S.db.collection("pool").doc(poolId).set(pub);
-  }).then(function(){
-    S.saved=mine; clearDraft(); S.view="result"; subscribePool(); render(); window.scrollTo(0,0);
-  }).catch(function(e){
-    btn.disabled=false; btn.textContent="জমা দিন ও ফলাফল দেখুন";
-    var msg = (e && e.code==="invalid_argument") ? "জমা দেওয়ার অনুমতি নেই। আয়োজকের কাছে এই লিংকে জমা দেওয়ার অনুমতি চেয়ে নিন।" :
-              (e && e.code==="quota_exceeded") ? "জমার জায়গা পূর্ণ হয়ে গেছে। আয়োজককে জানান।" :
-              "জমা হয়নি, সংযোগে সমস্যা। একটু পরে আবার চাপুন; আপনার উত্তরগুলো রাখা আছে।";
-    document.getElementById("err").textContent=msg;
-  });
-}
-
-function subscribePool(){
-  if(S.unsubPool || !S.db) return;
-  S.unsubPool = S.db.collection("pool").onSnapshot(function(snap){
-    S.pool = snap.docs.map(function(d){ var x=d.data()||{}; return {id:d.id, pct:x.pct, lv:x.lv, track:x.track}; })
-      .filter(function(x){ return typeof x.pct==="number" && Array.isArray(x.lv) && x.lv.length===DOMAINS.length; });
-    S.poolReady=true;
-    if(S.view==="result") renderResult();
-  }, function(){ S.poolReady=true; if(S.view==="result") renderResult(); });
-}
-
-function renderResult(){
-  setSteps(0);
-  var m=S.saved, sc=m.sc, r=recs(sc);
-  var n=S.pool.length, show = S.poolReady && n>=K_MIN;
-  var dist = DOMAINS.map(function(){ return [0,0,0,0]; });
-  S.pool.forEach(function(p){ p.lv.forEach(function(l,d){ if(l>=0&&l<=3) dist[d][l]++; }); });
-
-  var h='<h1>আপনার ফলাফল</h1>'+
-   '<p>যাচাই অংশে '+bn(MAXPTS)+'-এর মধ্যে '+bn(sc.pts)+' পয়েন্ট ('+bn(sc.pct)+'%)। কঠিন প্রশ্নে বেশি পয়েন্ট ধরা হয়েছে। নিচে নয়টি ক্ষেত্রে আপনার লেভেল হলুদ রেখায় চিহ্নিত'+(show?'; প্রতিটি ঘরের ছোট সংখ্যা হলো ওই লেভেলে থাকা অংশগ্রহণকারীর শতাংশ।':'।')+'</p>';
-
-  h+='<div class="ladder"><div class="lhead"><div class="lname"></div><div class="lcells">'+LEVELS.map(function(l){return '<span>'+l+'</span>';}).join("")+'</div></div>';
-  DOMAINS.forEach(function(name,d){
-    var lv=sc.levels[d];
-    h+='<div class="lrow"><div class="lname">'+name+(sc.verified[d]?'':'<small>শুধু স্ব-মূল্যায়ন</small>')+'</div><div class="lcells">';
-    for(var k=0;k<4;k++){
-      var cls="lc"+(k<=lv?" fill"+lv:"")+(k===lv?" me":"");
-      var txt = show? bn(Math.round(dist[d][k]/n*100))+"%" : (k===lv?"আপনি":"");
-      h+='<div class="'+cls+'" title="'+LEVELS[k]+': '+LEVEL_DESC[k]+'">'+txt+'</div>';
+async function makeFirebaseBackend(){
+  const base = `https://www.gstatic.com/firebasejs/${FB_VER}`;
+  const {initializeApp} = await import(`${base}/firebase-app.js`);
+  const A = await import(`${base}/firebase-auth.js`);
+  const F = await import(`${base}/firebase-firestore.js`);
+  const fapp = initializeApp(CONFIG.firebase);
+  const auth = A.getAuth(fapp);
+  const db = F.getFirestore(fapp);
+  const subRef = uid => F.doc(db,"rounds",CONFIG.round,"submissions",uid);
+  const lbRef = uid => F.doc(db,"rounds",CONFIG.round,"leaderboard",uid);
+  return {
+    onAuth: cb => A.onAuthStateChanged(auth, u => cb(u ? {uid:u.uid, email:u.email, name:u.displayName||""} : null)),
+    signIn: () => A.signInWithPopup(auth, new A.GoogleAuthProvider()),
+    signOut: () => A.signOut(auth),
+    getMine: async uid => { const s = await F.getDoc(subRef(uid)); return s.exists()? s.data():null; },
+    submit: async (uid, sub, lb) => {
+      const b = F.writeBatch(db);
+      b.set(subRef(uid), {...sub, createdAt:F.serverTimestamp()});
+      b.set(lbRef(uid), lb);
+      await b.commit();
+    },
+    leaderboard: async () => {
+      const qs = await F.getDocs(F.collection(db,"rounds",CONFIG.round,"leaderboard"));
+      return qs.docs.map(d=>({id:d.id, ...d.data()}));
+    },
+    allSubmissions: async () => {
+      const qs = await F.getDocs(F.collection(db,"rounds",CONFIG.round,"submissions"));
+      return qs.docs.map(d=>({id:d.id, ...d.data()}));
     }
-    h+='</div></div>';
-  });
-  h+='</div>';
-
-  h+='<div class="card"><h3>প্রশিক্ষণ কোথা থেকে শুরু করবেন</h3>';
-  if(r.start.length){
-    h+='<p class="small muted">আপনার আগ্রহ ('+sc.track+') ও সবার জন্য আবশ্যিক ক্ষেত্রগুলোর মধ্যে যেগুলোতে লেভেল সবচেয়ে কম:</p><ul class="recs">'+
-      r.start.map(function(d){ return '<li>'+DOMAINS[d]+' — এখন '+LEVELS[sc.levels[d]]+'; লক্ষ্য স্বনির্ভর</li>'; }).join("")+'</ul>';
-  } else {
-    h+='<p class="small">আপনার প্রয়োজনীয় সব ক্ষেত্রে আপনি অন্তত স্বনির্ভর। এখন হাতে-কলমে একটি পূর্ণ গবেষণা প্রকল্পে যুক্ত হওয়াই পরের ধাপ।</p>';
-  }
-  if(r.strong.length) h+='<p class="small"><b>আপনার শক্তির জায়গা:</b> '+r.strong.map(function(d){return DOMAINS[d];}).join(", ")+'</p>';
-  h+='</div>';
-
-  h+='<div class="card"><h3>যাচাই প্রশ্নের ফল</h3><p class="small muted">সবুজ = সঠিক। সঠিক উত্তর এখানে দেখানো হয় না, যাতে পরের অংশগ্রহণকারীদের যাচাই ঠিক থাকে।</p><div class="qgrid">'+
-    sc.correct.map(function(c,i){ return '<span class="'+(c?"y":"n")+'" aria-label="প্রশ্ন '+bn(i+1)+(c?" সঠিক":" সঠিক নয়")+'">'+bn(i+1)+'</span>'; }).join("")+'</div></div>';
-
-  h+='<div class="card"><h3>সবার মধ্যে আপনার অবস্থান</h3>';
-  if(!S.poolReady){ h+='<p class="small muted">তুলনার তথ্য আসছে…</p>'; }
-  else if(!show){ h+='<p class="small">এ পর্যন্ত '+bn(n)+' জন জমা দিয়েছেন। পরিচয় গোপন রাখতে অন্তত '+bn(K_MIN)+' জন হলে তুলনা দেখানো হবে।</p>'; }
-  else {
-    var sorted=S.pool.slice().sort(function(x,y){ return y.pct-x.pct; });
-    var myRank=1; sorted.forEach(function(p){ if(p.pct>sc.pct) myRank++; });
-    var below=sorted.filter(function(p){ return p.pct<sc.pct; }).length;
-    h+='<p class="small">যাচাই স্কোরে '+bn(n)+' জনের মধ্যে আপনার অবস্থান '+bn(myRank)+'। আপনি '+bn(Math.round(below/n*100))+'% অংশগ্রহণকারীর চেয়ে বেশি পেয়েছেন। তালিকায় শুধু নামবিহীন স্কোর আছে; সমান স্কোর পেলে একই অবস্থান।</p><ol class="board">';
-    var rank=0, prev=null;
-    sorted.forEach(function(p,i){
-      if(p.pct!==prev){ rank=i+1; prev=p.pct; }
-      var me = p.id===m.poolId;
-      h+='<li class="'+(me?"me":"")+'"><span class="rk">'+bn(rank)+'</span><span class="bw"><i style="width:'+p.pct+'%"></i></span><span class="pc">'+bn(p.pct)+'%</span>'+(me?'<span>আপনি</span>':'')+'</li>';
-    });
-    h+='</ol>';
-  }
-  h+='</div>';
-
-  if(S.isOwner) h+=ownerPanel();
-
-  h+='<div class="err" id="err" role="alert"></div><div class="btns"><button id="retake">আবার যাচাই দিন</button><button class="link" id="del">আমার ফলাফল মুছে ফেলুন</button></div>'+
-     '<p class="small muted">জমার তারিখ: '+bn(m.at||"")+'</p>';
-  app.innerHTML=h;
-
-  document.getElementById("retake").onclick=function(){
-    S.a={stream:[],degree:"",group:null,exp:null,expText:"",track:null,hours:null};
-    S.self=new Array(SELF.length).fill(null); S.mcq=new Array(MCQ.length).fill(null);
-    S.view="form"; S.step=1; render(); window.scrollTo(0,0);
   };
-  document.getElementById("del").onclick=function(){
-    if(!confirm("আপনার উত্তর, ফলাফল ও তুলনার তালিকার স্কোর স্থায়ীভাবে মুছে যাবে। মুছবেন?")) return;
-    var b=this; b.disabled=true;
-    S.db.collection("pool").doc(m.poolId).delete().then(function(){
-      return S.db.doc("data/users/"+S.uid+"/result").delete();
-    }).then(function(){
-      S.saved=null; S.view="form"; S.step=0; render(); window.scrollTo(0,0);
-    }).catch(function(){ b.disabled=false; document.getElementById("err").textContent="মোছা যায়নি। একটু পরে আবার চেষ্টা করুন।"; });
+}
+
+function makeDemoBackend(){
+  // শুধু দেখার জন্য: মেমোরিতে কিছু কাল্পনিক অংশগ্রহণকারী
+  const subs = {}, lb = {};
+  let seed = 7; const rnd = () => (seed = (seed*9301+49297)%233280)/233280;
+  for(let i=1;i<=14;i++){
+    const skill = rnd();
+    const self = {}; SELF.forEach(s=>self[s.id] = Math.max(0,Math.min(3,Math.round(skill*3 + (rnd()-.5)*1.6))));
+    const answers = {}; MCQ.forEach(q=>answers[q.id] = rnd() < 0.35+skill*0.6 ? q.c : (q.c+1)%4);
+    const r = scoreSubmission(self, answers);
+    const id = "demo"+i;
+    subs[id] = {profile:{name:`নমুনা অংশগ্রহণকারী ${bn(i)}`, streams:[["কওমি","আলিয়া","জেনারেল"][i%3]], interest:INTERESTS[i%4]}, email:`demo${i}@example.com`, self, answers, result:r};
+    lb[id] = {overall:r.overall, level:r.level, domains:Object.fromEntries(Object.entries(r.domains).map(([k,v])=>[k,v.score]))};
+  }
+  let user = null, listener = null;
+  return {
+    onAuth: cb => { listener = cb; cb(user); },
+    signIn: async () => { user = {uid:"me-demo", email:CONFIG.adminEmails[0], name:"ডেমো ব্যবহারকারী"}; listener && listener(user); },
+    signOut: async () => { user = null; listener && listener(null); },
+    getMine: async uid => subs[uid] || null,
+    submit: async (uid, sub, l) => { subs[uid] = sub; lb[uid] = l; },
+    leaderboard: async () => Object.entries(lb).map(([id,v])=>({id,...v})),
+    allSubmissions: async () => Object.entries(subs).map(([id,v])=>({id,...v}))
   };
-  var dl=document.getElementById("csv"); if(dl) dl.onclick=downloadCsv;
 }
 
-function ownerPanel(){
-  var n=S.pool.length;
-  var h='<div class="card"><h3>আয়োজকের সারাংশ</h3><p class="small muted">এটি শুধু আপনি (আর্টিফ্যাক্টের মালিক) দেখছেন। এখানেও কোনো নাম নেই; প্রশিক্ষণ পরিকল্পনার জন্য দলগত চিত্র।</p>';
-  if(!n){ return h+'<p class="small">এখনো কেউ জমা দেননি।</p></div>'; }
-  var tc={}; TRACKS.forEach(function(t){tc[t]=0;}); S.pool.forEach(function(p){ if(tc[p.track]!==undefined) tc[p.track]++; });
-  var avg=Math.round(S.pool.reduce(function(s,p){return s+p.pct;},0)/n);
-  h+='<p class="small">মোট জমা '+bn(n)+' জন, গড় যাচাই স্কোর '+bn(avg)+'%।</p>';
-  h+='<p class="small">আগ্রহ: '+TRACKS.map(function(t){ return t+' '+bn(tc[t]); }).join(", ")+'</p>';
-  h+='<div class="tbl-wrap"><table><thead><tr><th>ক্ষেত্র</th>'+LEVELS.map(function(l){return '<th>'+l+'</th>';}).join("")+'</tr></thead><tbody>';
-  DOMAINS.forEach(function(name,d){
-    var c=[0,0,0,0]; S.pool.forEach(function(p){ var l=p.lv[d]; if(l>=0&&l<=3) c[l]++; });
-    h+='<tr><td>'+name+'</td>'+c.map(function(x){ return '<td>'+bn(x)+'</td>'; }).join("")+'</tr>';
+/* ============================================================
+   অবস্থা ও রেন্ডার
+   ============================================================ */
+const state = { user:null, step:0, profile:{streams:[]}, self:{}, answers:{}, order:{}, mine:null, tab:"me", lbCache:null };
+MCQ.forEach(q => state.order[q.id] = shuffle(q.o.map((_,i)=>i)));
+const isAdmin = () => state.user && CONFIG.adminEmails.map(e=>e.toLowerCase()).includes((state.user.email||"").toLowerCase());
+
+function renderWho(){
+  const w = $("#who");
+  if(!state.user){ w.innerHTML = ""; return; }
+  w.innerHTML = `<span>${esc(state.user.email)}</span><button class="ghost small" id="out">লগআউট</button>`;
+  $("#out").onclick = () => backend.signOut();
+}
+
+function renderLogin(){
+  app.innerHTML = `
+  <section class="hero">
+    <h1>গবেষণার জন্য আপনি কোথায় আছেন, জেনে নিন</h1>
+    <p>প্রায় ২০ মিনিটের এই মূল্যায়নে ৯টি ক্ষেত্রে আপনার দক্ষতা দেখা হবে: গুণগত, পরিমাণগত ও মিশ্র পদ্ধতি থেকে শুরু করে একাডেমিক লেখা ও এআই-এর তথ্য যাচাই পর্যন্ত। জমা দেওয়ার সাথে সাথেই আপনার ফলাফল ও পরবর্তী প্রশিক্ষণের পরামর্শ দেখতে পাবেন।</p>
+    <p>আপনার নাম বা ইমেইল অন্য কোনো অংশগ্রহণকারী দেখতে পাবেন না। লিডারবোর্ডে শুধু নামবিহীন স্কোর দেখানো হয়।</p>
+    <p style="margin-top:22px"><button id="login">Gmail দিয়ে লগইন করুন</button></p>
+    <p class="err" id="lerr"></p>
+  </section>`;
+  $("#login").onclick = async () => {
+    try{ await backend.signIn(); }catch(e){ $("#lerr").textContent = "লগইন হয়নি: " + (e.code||e.message) + "। পপআপ ব্লক থাকলে খুলে দিয়ে আবার চেষ্টা করুন।"; }
+  };
+}
+
+function stepsBar(){
+  const names = ["পরিচিতি","স্ব-মূল্যায়ন","ছোট যাচাই"];
+  return `<div class="steps" aria-label="ধাপ">${names.map((n,i)=>`<span class="${i===state.step?"on":""}">${bn(i+1)}. ${n}</span>`).join("")}</div>`;
+}
+
+function renderForm(){
+  if(state.step===0) renderProfile();
+  else if(state.step===1) renderSelf();
+  else renderMcq();
+  window.scrollTo(0,0);
+}
+
+function renderProfile(){
+  const p = state.profile;
+  const opt = (arr,val) => arr.map(x=>`<option ${x===val?"selected":""}>${esc(x)}</option>`).join("");
+  app.innerHTML = `${stepsBar()}
+  <div class="panel">
+    <h2>পরিচিতি</h2>
+    <label class="f" for="name">পূর্ণ নাম</label>
+    <input type="text" id="name" value="${esc(p.name||state.user.name||"")}" autocomplete="name">
+    <label class="f">শিক্ষার ধারা (একাধিক হতে পারে)</label>
+    <div class="checks">${["কওমি","আলিয়া","জেনারেল"].map(s=>`<label><input type="checkbox" value="${s}" ${p.streams.includes(s)?"checked":""}> ${s}</label>`).join("")}</div>
+    <label class="f" for="degree">সর্বোচ্চ ডিগ্রি ও বর্তমানে যা পড়ছেন</label>
+    <input type="text" id="degree" value="${esc(p.degree||"")}" placeholder="যেমন: তাকমিল; বর্তমানে তাখাসসুস ২য় বর্ষ">
+    <label class="f" for="ssc">মাধ্যমিক বা দাখিলে বিভাগ</label>
+    <select id="ssc"><option value="">বাছাই করুন</option>${opt(["বিজ্ঞান","মানবিক","ব্যবসায় শিক্ষা","প্রযোজ্য নয়"],p.ssc)}</select>
+    <label class="f" for="exp">আগে কোনো গবেষণা, জরিপ বা প্রকাশনার অভিজ্ঞতা আছে?</label>
+    <input type="text" id="exp" value="${esc(p.exp||"")}" placeholder="না থাকলে লিখুন: নেই">
+    <label class="f" for="interest">কোন ধরনের গবেষণায় আগ্রহী</label>
+    <select id="interest"><option value="">বাছাই করুন</option>${opt(INTERESTS,p.interest)}</select>
+    <label class="f" for="hours">সপ্তাহে কত ঘণ্টা দিতে পারবেন</label>
+    <select id="hours"><option value="">বাছাই করুন</option>${opt(["৫ ঘণ্টার কম","৫-১০ ঘণ্টা","১০-২০ ঘণ্টা","২০ ঘণ্টার বেশি"],p.hours)}</select>
+    <p class="err" id="err"></p>
+    <div class="nav"><span></span><button id="next">পরের ধাপ</button></div>
+  </div>`;
+  $("#next").onclick = () => {
+    p.name = $("#name").value.trim(); p.degree = $("#degree").value.trim(); p.ssc = $("#ssc").value;
+    p.exp = $("#exp").value.trim(); p.interest = $("#interest").value; p.hours = $("#hours").value;
+    p.streams = [...document.querySelectorAll(".checks input:checked")].map(x=>x.value);
+    const missing = [];
+    if(!p.name) missing.push("নাম"); if(!p.streams.length) missing.push("শিক্ষার ধারা");
+    if(!p.ssc) missing.push("মাধ্যমিকের বিভাগ"); if(!p.interest) missing.push("আগ্রহ"); if(!p.hours) missing.push("সময়");
+    if(missing.length){ $("#err").textContent = "এগুলো পূরণ করুন: " + missing.join(", "); return; }
+    state.step = 1; renderForm();
+  };
+}
+
+function renderSelf(){
+  let rows = "";
+  for(const d of DOMAINS){
+    rows += `<div class="domain-title">${esc(d.name)}</div>`;
+    for(const s of SELF.filter(x=>x.d===d.id)){
+      rows += `<div class="srow" role="radiogroup" aria-label="${esc(s.t)}"><span>${esc(s.t)}</span>${[0,1,2,3].map(v=>`<label class="opt"><input type="radio" name="${s.id}" value="${v}" ${String(state.self[s.id])===String(v)?"checked":""} aria-label="${bn(v)}"></label>`).join("")}</div>`;
+    }
+  }
+  app.innerHTML = `${stepsBar()}
+  <div class="panel">
+    <h2>আমি পারি…</h2>
+    <p class="legend">প্রতিটি বাক্যে একটি মান বাছুন। <b>০</b> = পারি না, <b>১</b> = সাহায্য নিয়ে পারি, <b>২</b> = নিজে পারি, <b>৩</b> = অন্যকে শেখাতে পারি। যা জানেন তা নয়, যা করতে পারেন তার ভিত্তিতে দিন।</p>
+    <div class="scale-head"><span></span><span>০</span><span>১</span><span>২</span><span>৩</span></div>
+    ${rows}
+    <p class="err" id="err"></p>
+    <div class="nav"><button class="ghost" id="back">আগের ধাপ</button><button id="next">পরের ধাপ</button></div>
+  </div>`;
+  app.querySelectorAll(".srow input").forEach(i=>i.onchange = e => state.self[e.target.name] = Number(e.target.value));
+  $("#back").onclick = () => { state.step = 0; renderForm(); };
+  $("#next").onclick = () => {
+    const left = SELF.filter(s=>state.self[s.id]===undefined).length;
+    if(left){ $("#err").textContent = `আরও ${bn(left)}টি বাক্যে মান দেওয়া বাকি।`; return; }
+    state.step = 2; renderForm();
+  };
+}
+
+function renderMcq(){
+  let html = "";
+  MCQ.forEach((q,n)=>{
+    const opts = state.order[q.id].map(i=>`<label><input type="radio" name="${q.id}" value="${i}" ${String(state.answers[q.id])===String(i)?"checked":""}><span>${esc(q.o[i])}</span></label>`).join("")
+      + `<label><input type="radio" name="${q.id}" value="-1" ${String(state.answers[q.id])==="-1"?"checked":""}><span>জানি না</span></label>`;
+    html += `<div class="mcq" role="radiogroup" aria-labelledby="t${q.id}">
+      ${q.passage?`<p class="note">নিচের অনুচ্ছেদটি পড়ে উত্তর দিন:</p><blockquote lang="en">${esc(PASSAGE)}</blockquote>`:""}
+      <div class="q" id="t${q.id}">${bn(n+1)}. ${esc(q.q)}</div>${opts}</div>`;
   });
-  h+='</tbody></table></div><div class="btns"><button id="csv">নামবিহীন ডেটা CSV নামান</button></div></div>';
-  return h;
+  app.innerHTML = `${stepsBar()}
+  <div class="panel">
+    <h2>ছোট যাচাই</h2>
+    <p class="legend">${bn(MCQ.length)}টি প্রশ্ন, প্রায় ১০ মিনিট। ইন্টারনেট বা এআই ছাড়া নিজে উত্তর দিন। না জানলে "জানি না" বাছুন, অনুমান করবেন না।</p>
+    ${html}
+    <p class="err" id="err"></p>
+    <div class="nav"><button class="ghost" id="back">আগের ধাপ</button><button id="submit">জমা দিন</button></div>
+  </div>`;
+  app.querySelectorAll(".mcq input").forEach(i=>i.onchange = e => state.answers[e.target.name] = Number(e.target.value));
+  $("#back").onclick = () => { state.step = 1; renderForm(); };
+  $("#submit").onclick = submit;
 }
 
-function downloadCsv(){
-  claude.use("downloads").then(function(dl){
-    if(!dl){ document.getElementById("err").textContent="এই ভিউতে ফাইল নামানো যাচ্ছে না।"; return; }
-    var rows=[["score_pct","track"].concat(DOMAINS.map(function(d,i){return "domain"+(i+1)+"_level";}))];
-    S.pool.forEach(function(p){ rows.push([p.pct,p.track].concat(p.lv)); });
-    var csv="\uFEFF"+rows.map(function(r){ return r.map(function(x){ return '"'+String(x).replace(/"/g,'""')+'"'; }).join(","); }).join("\n");
-    return dl.save({filename:"research-skills-tna-anonymous.csv", data:new Blob([csv],{type:"text/csv"})});
-  }).catch(function(){});
+async function submit(){
+  const left = MCQ.filter(q=>state.answers[q.id]===undefined).length;
+  if(left){ $("#err").textContent = `আরও ${bn(left)}টি প্রশ্নের উত্তর বাকি।`; return; }
+  const btn = $("#submit"); btn.disabled = true; btn.textContent = "জমা হচ্ছে…";
+  const result = scoreSubmission(state.self, state.answers);
+  const sub = {profile:state.profile, email:state.user.email, self:state.self, answers:state.answers, result};
+  const lb = {overall:result.overall, level:result.level, domains:Object.fromEntries(Object.entries(result.domains).map(([k,v])=>[k,v.score]))};
+  try{
+    await backend.submit(state.user.uid, sub, lb);
+    state.mine = sub; state.lbCache = null; state.tab = "me"; renderResults();
+  }catch(e){
+    btn.disabled = false; btn.textContent = "জমা দিন";
+    $("#err").textContent = "জমা হয়নি: " + (e.code||e.message) + "। ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন।";
+  }
 }
 
-/* ---------- boot ---------- */
-function gate(msg){ S.view="gate"; S.gateMsg=msg; render(); }
+/* ---------------- ফলাফল ---------------- */
+async function getLb(){ if(!state.lbCache) state.lbCache = await backend.leaderboard(); return state.lbCache; }
 
-function timeout(p, ms){ return Promise.race([p, new Promise(function(_,rej){ setTimeout(function(){ rej({code:"timeout"}); }, ms); })]); }
+async function renderResults(){
+  const tabs = [["me","আমার ফল"],["lb","লিডারবোর্ড"],["sum","সবার সারসংক্ষেপ"]];
+  if(isAdmin()) tabs.push(["admin","অ্যাডমিন"]);
+  app.innerHTML = `<nav class="tabs" role="tablist">${tabs.map(([k,n])=>`<button role="tab" aria-selected="${state.tab===k}" class="${state.tab===k?"on":""}" data-t="${k}">${n}</button>`).join("")}</nav><section id="pane"><p class="note">লোড হচ্ছে…</p></section>`;
+  app.querySelectorAll(".tabs button").forEach(b=>b.onclick = () => { state.tab = b.dataset.t; renderResults(); });
+  const pane = $("#pane");
+  try{
+    if(state.tab==="me") await paneMe(pane);
+    else if(state.tab==="lb") await paneLb(pane);
+    else if(state.tab==="sum") await paneSum(pane);
+    else await paneAdmin(pane);
+  }catch(e){ pane.innerHTML = `<p class="err">তথ্য আনা যায়নি: ${esc(e.code||e.message)}। পেজটি রিফ্রেশ করে আবার দেখুন।</p>`; }
+}
 
-function boot(){
-  if(!window.claude || !window.claude.use){ return gate("এই পেজটি claude.ai-তে খুলতে হবে। আয়োজকের দেওয়া লিংকটি ব্রাউজারে খুলে নিজের অ্যাকাউন্টে (যেমন Gmail দিয়ে) লগ ইন করুন।"); }
-  Promise.all([claude.use("db"), claude.use("user")]).then(function(res){
-    S.db=res[0]; S.user=res[1];
-    if(!S.db || !S.user) return gate("জমা দিতে ও ফলাফল দেখতে claude.ai-তে লগ ইন থাকতে হবে। লগ ইন করে লিংকটি আবার খুলুন।");
-    return Promise.all([S.user.id(), S.user.can("data.write"), S.user.isOwner()]).then(function(x){
-      S.uid=x[0]; S.canWrite=x[1]; S.isOwner=x[2];
-      if(!S.uid) return gate("আপনার অ্যাকাউন্ট শনাক্ত করা যাচ্ছে না। claude.ai-তে লগ ইন করে লিংকটি আবার খুলুন।");
-      return timeout(S.db.doc("data/users/"+S.uid+"/result").get(), 10000).then(function(snap){
-        if(snap.exists){ S.saved=snap.data(); S.view="result"; subscribePool(); render(); }
-        else { S.view="form"; loadDraft(); render(); }
-      });
-    });
-  }).catch(function(e){
-    if(e && e.code==="timeout") gate("সংযোগ পাওয়া যাচ্ছে না। ইন্টারনেট দেখে কিছুক্ষণ পর পেজটি আবার খুলুন।");
-    else gate("এই মুহূর্তে পেজটি চালু করা যাচ্ছে না। কিছুক্ষণ পর আবার খুলুন।");
+async function paneMe(pane){
+  const r = state.mine.result;
+  const lb = await getLb();
+  const below = lb.filter(x=>x.overall < r.overall).length;
+  const pct = lb.length>1 ? Math.round(below/(lb.length-1)*100) : null;
+  const rel = relevantDomains(state.mine.profile.interest);
+  const priorities = DOMAINS.filter(d=>rel.includes(d.id)).sort((a,b)=>r.domains[a.id].score - r.domains[b.id].score).slice(0,3);
+  const strengths = DOMAINS.filter(d=>r.domains[d.id].level>=2).sort((a,b)=>r.domains[b.id].score - r.domains[a.id].score).slice(0,3);
+  const adjustedN = Object.values(r.domains).filter(x=>x.adjusted).length;
+
+  let ladder = `<div class="h left">ক্ষেত্র</div>${LEVELS.map(l=>`<div class="h">${l.name}</div>`).join("")}<div class="h">স্কোর</div>`;
+  for(const d of DOMAINS){
+    const x = r.domains[d.id];
+    ladder += `<div class="name">${esc(d.name)}${x.adjusted?`<small>স্ব-মূল্যায়নের চেয়ে কম</small>`:""}</div>`
+      + [0,1,2,3].map(i=>`<div class="cell ${i<=x.level?"f"+Math.min(x.level,3):""}" title="${LEVELS[i].name}"></div>`).join("")
+      + `<div class="score">${bn(x.score)}</div>`;
+  }
+  pane.innerHTML = `
+  <div class="panel">
+    <h2>আপনার অবস্থান</h2>
+    <p class="lead">সামগ্রিকভাবে আপনি <b>${LEVELS[r.level].name}</b> (${LEVELS[r.level].en}) স্তরে আছেন, স্কোর ${bn(r.overall)}/১০০। যাচাই অংশে ${bn(MCQ.length)}টির মধ্যে ${bn(r.correctTotal)}টি সঠিক।${pct!==null && lb.length>=CONFIG.minCohort?` আপনি অংশগ্রহণকারীদের ${bn(pct)}%-এর চেয়ে এগিয়ে।`:""}</p>
+    <div class="ladder-wrap"><div class="ladder">${ladder}</div></div>
+    <p class="note" style="margin-top:12px">প্রতিটি সারিতে যত ঘর ভরা, তত উঁচু স্তর। স্কোর = স্ব-মূল্যায়ন ও যাচাই প্রশ্নের ফলাফলের সমন্বয় (০-১০০)।${adjustedN?` ${bn(adjustedN)}টি ক্ষেত্রে যাচাই প্রশ্নের ফলাফল আপনার স্ব-মূল্যায়নের চেয়ে কম এসেছে; সেখানে নিজের দক্ষতা আরেকবার যাচাই করে নিন।`:""}</p>
+  </div>
+  <div class="panel" style="margin-top:16px">
+    <h3>প্রশিক্ষণ শুরু করুন এখান থেকে</h3>
+    <p class="note">আপনার আগ্রহের ধরন অনুযায়ী (${esc(state.mine.profile.interest)}) সবচেয়ে কম স্কোরের তিনটি ক্ষেত্র:</p>
+    <ol class="next">${priorities.map(d=>`<li><b>${esc(d.module)}</b> <span class="chip l${r.domains[d.id].level}">${LEVELS[r.domains[d.id].level].name}</span></li>`).join("")}</ol>
+    ${strengths.length?`<p class="note" style="margin-top:14px">আপনার শক্তির জায়গা: ${strengths.map(d=>esc(d.name)).join(", ")}।</p>`:""}
+  </div>`;
+}
+
+async function paneLb(pane){
+  const lb = (await getLb()).sort((a,b)=>b.overall-a.overall);
+  if(lb.length < CONFIG.minCohort){ pane.innerHTML = `<div class="panel"><p>কমপক্ষে ${bn(CONFIG.minCohort)} জন জমা দিলে লিডারবোর্ড দেখা যাবে, যাতে কারো পরিচয় অনুমান করা না যায়। এখন জমা পড়েছে ${bn(lb.length)}টি।</p></div>`; return; }
+  const meIdx = lb.findIndex(x=>x.id===state.user.uid);
+  pane.innerHTML = `<div class="panel">
+    <h2>লিডারবোর্ড</h2>
+    <p class="note">${bn(lb.length)} জন অংশগ্রহণকারী। নাম দেখানো হয় না; আপনার সারিটি চিহ্নিত।${meIdx>=0?` আপনার অবস্থান ${bn(meIdx+1)}।`:""}</p>
+    <div class="scroll"><table class="lb">
+      <thead><tr><th>ক্রম</th><th>অংশগ্রহণকারী</th><th style="width:40%">স্কোর</th><th></th><th>স্তর</th></tr></thead>
+      <tbody>${lb.map((x,i)=>`<tr class="${i===meIdx?"me":""}"><td>${bn(i+1)}</td><td>${i===meIdx?"<b>আপনি</b>":"—"}</td><td><div class="bar"><i style="width:${x.overall}%"></i></div></td><td>${bn(x.overall)}</td><td><span class="chip l${x.level}">${LEVELS[x.level].name}</span></td></tr>`).join("")}</tbody>
+    </table></div></div>`;
+}
+
+function cohortHtml(lb){
+  const n = lb.length;
+  const lvlCount = [0,0,0,0]; lb.forEach(x=>lvlCount[x.level]++);
+  const avg = id => Math.round(lb.reduce((a,x)=>a+(x.domains?.[id]??0),0)/n);
+  const sorted = [...DOMAINS].sort((a,b)=>avg(a.id)-avg(b.id));
+  let dist = "";
+  for(const d of sorted){
+    const c = [0,0,0,0]; lb.forEach(x=>c[levelFromScore(x.domains?.[d.id]??0)]++);
+    dist += `<div>${esc(d.name)}</div><div class="stack" role="img" aria-label="${esc(d.name)}: ${LEVELS.map((l,i)=>l.name+" "+c[i]).join(", ")}">${c.map((v,i)=>v?`<span style="width:${v/n*100}%;background:${levelColor(i)}" title="${LEVELS[i].name}: ${bn(v)} জন"></span>`:"").join("")}</div><div class="score">${bn(avg(d.id))}</div>`;
+  }
+  const weakest = sorted.slice(0,3).map(d=>d.name).join(", ");
+  return `
+    <p class="lead">${bn(n)} জনের মধ্যে ${LEVELS.map((l,i)=>`${l.name} স্তরে ${bn(lvlCount[i])} জন`).join(", ")}। দলগতভাবে সবচেয়ে দুর্বল ক্ষেত্র: <b>${esc(weakest)}</b>।</p>
+    <div class="scroll"><div class="dist"><div class="note">ক্ষেত্র (দুর্বল থেকে সবল)</div><div class="note">স্তর অনুযায়ী অংশগ্রহণকারীদের ভাগ</div><div class="note">গড়</div>${dist}</div></div>
+    <div class="keyrow">${LEVELS.map((l,i)=>`<span><i style="background:${levelColor(i)}"></i>${l.name}</span>`).join("")}</div>`;
+}
+
+async function paneSum(pane){
+  const lb = await getLb();
+  if(lb.length < CONFIG.minCohort){ pane.innerHTML = `<div class="panel"><p>কমপক্ষে ${bn(CONFIG.minCohort)} জন জমা দিলে সারসংক্ষেপ দেখা যাবে। এখন জমা পড়েছে ${bn(lb.length)}টি।</p></div>`; return; }
+  pane.innerHTML = `<div class="panel"><h2>সবার সারসংক্ষেপ</h2>${cohortHtml(lb)}<p class="note" style="margin-top:14px">শুধু দলগত হিসাব দেখানো হয়েছে; কোনো ব্যক্তির তথ্য নেই।</p></div>`;
+}
+
+async function paneAdmin(pane){
+  const subs = await backend.allSubmissions();
+  const lb = await getLb();
+  const rows = subs.sort((a,b)=>b.result.overall-a.result.overall);
+  const interestCount = {}; rows.forEach(s=>{ const k=s.profile?.interest||"—"; interestCount[k]=(interestCount[k]||0)+1; });
+  pane.innerHTML = `<div class="panel">
+    <h2>দলগত বিশ্লেষণ</h2>
+    ${lb.length?cohortHtml(lb):"<p>এখনো কোনো জমা নেই।</p>"}
+    <p class="note" style="margin-top:10px">আগ্রহ অনুযায়ী: ${Object.entries(interestCount).map(([k,v])=>`${esc(k)} ${bn(v)} জন`).join("; ")}</p>
+  </div>
+  <div class="panel" style="margin-top:16px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h2>সব জমা (নামসহ)</h2><button class="small" id="csv">CSV ডাউনলোড</button></div>
+    <p class="note">এই অংশ শুধু অ্যাডমিন দেখতে পান।</p>
+    <div class="scroll"><table class="lb admin">
+      <thead><tr><th>নাম</th><th>ইমেইল</th><th>ধারা</th><th>আগ্রহ</th><th>স্কোর</th><th>স্তর</th>${DOMAINS.map(d=>`<th title="${esc(d.name)}">${d.id.toUpperCase()}</th>`).join("")}</tr></thead>
+      <tbody>${rows.map(s=>`<tr><td>${esc(s.profile?.name)}</td><td>${esc(s.email)}</td><td>${esc((s.profile?.streams||[]).join(", "))}</td><td>${esc(s.profile?.interest)}</td><td>${bn(s.result.overall)}</td><td><span class="chip l${s.result.level}">${LEVELS[s.result.level].name}</span></td>${DOMAINS.map(d=>`<td>${bn(s.result.domains[d.id].score)}</td>`).join("")}</tr>`).join("")}</tbody>
+    </table></div>
+    <p class="note">D1-D9: ${DOMAINS.map(d=>`${d.id.toUpperCase()} ${esc(d.name)}`).join("; ")}</p>
+  </div>`;
+  $("#csv").onclick = () => {
+    const head = ["name","email","streams","degree","ssc","experience","interest","hours","overall","level","correct_mcq",...DOMAINS.map(d=>d.id+"_score"),...DOMAINS.map(d=>d.id+"_level"),...SELF.map(s=>s.id),...MCQ.map(q=>q.id+"_correct")];
+    const lines = rows.map(s=>{ const p=s.profile||{}, r=s.result;
+      return [p.name,s.email,(p.streams||[]).join("|"),p.degree,p.ssc,p.exp,p.interest,p.hours,r.overall,LEVELS[r.level].en,r.correctTotal,
+        ...DOMAINS.map(d=>r.domains[d.id].score),...DOMAINS.map(d=>LEVELS[r.domains[d.id].level].en),
+        ...SELF.map(x=>s.self?.[x.id]),...MCQ.map(q=>Number(s.answers?.[q.id])===q.c?1:0)]
+        .map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(","); });
+    const blob = new Blob(["\ufeff"+[head.join(","),...lines].join("\n")],{type:"text/csv;charset=utf-8"});
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `research-tna-${CONFIG.round}.csv`; a.click();
+  };
+}
+
+/* ============================================================
+   শুরু
+   ============================================================ */
+(async () => {
+  if(!useFirebase) $("#banner").innerHTML = `<div class="banner">ডেমো মোড: Firebase যুক্ত করা হয়নি, তাই কিছু সংরক্ষণ হবে না এবং কাল্পনিক অংশগ্রহণকারী দেখানো হচ্ছে।</div>`;
+  try{ backend = useFirebase ? await makeFirebaseBackend() : makeDemoBackend(); }
+  catch(e){ app.innerHTML = `<p class="err">অ্যাপ চালু হয়নি: ${esc(e.message)}। ইন্টারনেট সংযোগ ও Firebase কনফিগারেশন দেখুন।</p>`; return; }
+  backend.onAuth(async u => {
+    state.user = u; renderWho();
+    if(!u){ renderLogin(); return; }
+    app.innerHTML = `<p class="note">লোড হচ্ছে…</p>`;
+    try{ state.mine = await backend.getMine(u.uid); }catch(e){ state.mine = null; }
+    if(state.mine) renderResults(); else { state.step = 0; renderForm(); }
   });
-}
-app.innerHTML='<p class="muted">লোড হচ্ছে…</p>';
-boot();
 })();
 </script>
 </body>
