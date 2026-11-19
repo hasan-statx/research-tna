@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>গবেষণা দক্ষতা যাচাই</title>
+<title>গবেষণা লেভেল এসেসমেন্ট</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Hind+Siliguri:wght@400;500;600&display=swap" rel="stylesheet">
@@ -121,7 +121,7 @@ blockquote{margin:10px 0;padding:10px 14px;border-left:3px solid var(--accent);b
 <body>
 <div id="banner"></div>
 <header class="top">
-  <div class="brand">গবেষণা দক্ষতা যাচাই</div>
+  <div class="brand">গবেষণা লেভেল এসেসমেন্ট</div>
   <div class="who" id="who"></div>
 </header>
 <main class="wrap" id="app"><p class="note">লোড হচ্ছে…</p></main>
@@ -384,7 +384,7 @@ function renderProfile(){
     <h2>পরিচিতি</h2>
     <label class="f" for="name">পূর্ণ নাম</label>
     <input type="text" id="name" value="${esc(p.name||state.user.name||"")}" autocomplete="name">
-    <label class="f">শিক্ষার ধারা (একাধিক হতে পারে)</label>
+    <label class="f">শিক্ষার ধারা (একাধিক অপশন প্রযোজ্য)</label>
     <div class="checks">${["কওমি","আলিয়া","জেনারেল"].map(s=>`<label><input type="checkbox" value="${s}" ${p.streams.includes(s)?"checked":""}> ${s}</label>`).join("")}</div>
     <label class="f" for="degree">সর্বোচ্চ ডিগ্রি ও বর্তমানে যা পড়ছেন</label>
     <input type="text" id="degree" value="${esc(p.degree||"")}" placeholder="যেমন: তাকমিল; বর্তমানে তাখাসসুস ২য় বর্ষ">
