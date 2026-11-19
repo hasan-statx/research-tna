@@ -394,7 +394,7 @@ function renderProfile(){
   <div class="panel">
     <h2>পরিচিতি</h2>
     <label class="f" for="name">পূর্ণ নাম (ঐচ্ছিক)</label>
-    <input type="text" id="name" value="${esc(p.name||state.user.name||"")}" autocomplete="name">
+    <input type="text" id="name" value="${esc(p.name||"")}" autocomplete="name">
     <label class="f">শিক্ষার ধারা (একাধিক অপশন প্রযোজ্য)</label>
     <div class="checks">${["কওমি","আলিয়া","জেনারেল"].map(s=>`<label><input type="checkbox" value="${s}" ${p.streams.includes(s)?"checked":""}> ${s}</label>`).join("")}</div>
     <label class="f" for="degree">সর্বোচ্চ ডিগ্রি ও বর্তমানে যা পড়ছেন</label>
