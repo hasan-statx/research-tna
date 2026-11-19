@@ -106,7 +106,7 @@ blockquote{margin:10px 0;padding:10px 14px;border-left:3px solid var(--accent);b
 .keyrow{display:flex;gap:14px;flex-wrap:wrap;font-size:.85rem;color:var(--muted);margin-top:10px}
 .keyrow i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
 .scroll{overflow-x:auto}
-.admin td{white-space:nowrap}
+.admin td,.admin th{white-space:nowrap}
 .center{text-align:center}
 @media (max-width:560px){
   h1{font-size:1.6rem}
@@ -272,6 +272,12 @@ const $ = sel => document.querySelector(sel);
 const app = $("#app");
 function shuffle(a){ a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
 const levelColor = i => `var(--l${i})`;
+const fmtTime = t => t ? bn(new Date(t).toLocaleString("en-GB",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})) : "—";
+function startRetake(){
+  state.self = {}; state.answers = {};
+  MCQ.forEach(q => state.order[q.id] = shuffle(q.o.map((_,i)=>i)));
+  state.step = 0; renderForm();
+}
 
 /* ============================================================
    ব্যাকএন্ড: Firebase বা ডেমো
@@ -287,16 +293,21 @@ async function makeFirebaseBackend(){
   const fapp = initializeApp(CONFIG.firebase);
   const auth = A.getAuth(fapp);
   const db = F.getFirestore(fapp);
-  const subRef = uid => F.doc(db,"rounds",CONFIG.round,"submissions",uid);
+  const entriesCol = () => F.collection(db,"rounds",CONFIG.round,"entries");
   const lbRef = uid => F.doc(db,"rounds",CONFIG.round,"leaderboard",uid);
   return {
     onAuth: cb => A.onAuthStateChanged(auth, u => cb(u ? {uid:u.uid, email:u.email, name:u.displayName||""} : null)),
     signIn: () => A.signInWithPopup(auth, new A.GoogleAuthProvider()),
     signOut: () => A.signOut(auth),
-    getMine: async uid => { const s = await F.getDoc(subRef(uid)); return s.exists()? s.data():null; },
+    // নিজের সব জমা, নতুনটি আগে
+    getMine: async uid => {
+      const qs = await F.getDocs(F.query(entriesCol(), F.where("uid","==",uid)));
+      return qs.docs.map(d=>d.data()).sort((a,b)=>(b.clientTime||0)-(a.clientTime||0));
+    },
+    // প্রতিটি জমা নতুন ডকুমেন্ট; লিডারবোর্ডে প্রত্যেকের সর্বশেষ জমা
     submit: async (uid, sub, lb) => {
       const b = F.writeBatch(db);
-      b.set(subRef(uid), {...sub, createdAt:F.serverTimestamp()});
+      b.set(F.doc(entriesCol()), {...sub, uid, createdAt:F.serverTimestamp()});
       b.set(lbRef(uid), lb);
       await b.commit();
     },
@@ -305,7 +316,7 @@ async function makeFirebaseBackend(){
       return qs.docs.map(d=>({id:d.id, ...d.data()}));
     },
     allSubmissions: async () => {
-      const qs = await F.getDocs(F.collection(db,"rounds",CONFIG.round,"submissions"));
+      const qs = await F.getDocs(entriesCol());
       return qs.docs.map(d=>({id:d.id, ...d.data()}));
     }
   };
@@ -313,7 +324,7 @@ async function makeFirebaseBackend(){
 
 function makeDemoBackend(){
   // শুধু দেখার জন্য: মেমোরিতে কিছু কাল্পনিক অংশগ্রহণকারী
-  const subs = {}, lb = {};
+  const entries = [], lb = {};
   let seed = 7; const rnd = () => (seed = (seed*9301+49297)%233280)/233280;
   for(let i=1;i<=14;i++){
     const skill = rnd();
@@ -321,7 +332,7 @@ function makeDemoBackend(){
     const answers = {}; MCQ.forEach(q=>answers[q.id] = rnd() < 0.35+skill*0.6 ? q.c : (q.c+1)%4);
     const r = scoreSubmission(self, answers);
     const id = "demo"+i;
-    subs[id] = {profile:{name:`নমুনা অংশগ্রহণকারী ${bn(i)}`, streams:[["কওমি","আলিয়া","জেনারেল"][i%3]], interest:INTERESTS[i%4]}, email:`demo${i}@example.com`, self, answers, result:r};
+    entries.push({uid:id, clientTime:Date.now()-i*3600e3, profile:{name:`নমুনা অংশগ্রহণকারী ${bn(i)}`, streams:[["কওমি","আলিয়া","জেনারেল"][i%3]], interest:INTERESTS[i%4]}, email:`demo${i}@example.com`, self, answers, result:r});
     lb[id] = {overall:r.overall, level:r.level, domains:Object.fromEntries(Object.entries(r.domains).map(([k,v])=>[k,v.score]))};
   }
   let user = null, listener = null;
@@ -329,17 +340,17 @@ function makeDemoBackend(){
     onAuth: cb => { listener = cb; cb(user); },
     signIn: async () => { user = {uid:"me-demo", email:CONFIG.adminEmails[0], name:"ডেমো ব্যবহারকারী"}; listener && listener(user); },
     signOut: async () => { user = null; listener && listener(null); },
-    getMine: async uid => subs[uid] || null,
-    submit: async (uid, sub, l) => { subs[uid] = sub; lb[uid] = l; },
+    getMine: async uid => entries.filter(e=>e.uid===uid).sort((a,b)=>b.clientTime-a.clientTime),
+    submit: async (uid, sub, l) => { entries.push({...sub, uid}); lb[uid] = l; },
     leaderboard: async () => Object.entries(lb).map(([id,v])=>({id,...v})),
-    allSubmissions: async () => Object.entries(subs).map(([id,v])=>({id,...v}))
+    allSubmissions: async () => entries.map((v,i)=>({id:"e"+i,...v}))
   };
 }
 
 /* ============================================================
    অবস্থা ও রেন্ডার
    ============================================================ */
-const state = { user:null, step:0, profile:{streams:[]}, self:{}, answers:{}, order:{}, mine:null, tab:"me", lbCache:null };
+const state = { user:null, step:0, profile:{streams:[]}, self:{}, answers:{}, order:{}, mine:null, history:[], tab:"me", lbCache:null };
 MCQ.forEach(q => state.order[q.id] = shuffle(q.o.map((_,i)=>i)));
 const isAdmin = () => state.user && CONFIG.adminEmails.map(e=>e.toLowerCase()).includes((state.user.email||"").toLowerCase());
 
@@ -397,8 +408,9 @@ function renderProfile(){
     <label class="f" for="hours">সপ্তাহে কত ঘণ্টা দিতে পারবেন</label>
     <select id="hours"><option value="">বাছাই করুন</option>${opt(["৫ ঘণ্টার কম","৫-১০ ঘণ্টা","১০-২০ ঘণ্টা","২০ ঘণ্টার বেশি"],p.hours)}</select>
     <p class="err" id="err"></p>
-    <div class="nav"><span></span><button id="next">পরের ধাপ</button></div>
+    <div class="nav">${state.mine?`<button class="ghost" id="toResults">ফলাফলে ফিরুন</button>`:"<span></span>"}<button id="next">পরের ধাপ</button></div>
   </div>`;
+  if($("#toResults")) $("#toResults").onclick = () => { state.tab = "me"; renderResults(); };
   $("#next").onclick = () => {
     p.name = $("#name").value.trim(); p.degree = $("#degree").value.trim(); p.ssc = $("#ssc").value;
     p.exp = $("#exp").value.trim(); p.interest = $("#interest").value; p.hours = $("#hours").value;
@@ -464,11 +476,11 @@ async function submit(){
   if(left){ $("#err").textContent = `আরও ${bn(left)}টি প্রশ্নের উত্তর বাকি।`; return; }
   const btn = $("#submit"); btn.disabled = true; btn.textContent = "জমা হচ্ছে…";
   const result = scoreSubmission(state.self, state.answers);
-  const sub = {profile:state.profile, email:state.user.email, self:state.self, answers:state.answers, result};
+  const sub = {profile:state.profile, email:state.user.email, self:state.self, answers:state.answers, result, clientTime:Date.now()};
   const lb = {overall:result.overall, level:result.level, domains:Object.fromEntries(Object.entries(result.domains).map(([k,v])=>[k,v.score]))};
   try{
     await backend.submit(state.user.uid, sub, lb);
-    state.mine = sub; state.lbCache = null; state.tab = "me"; renderResults();
+    state.mine = sub; state.history = [sub, ...state.history]; state.lbCache = null; state.tab = "me"; renderResults();
   }catch(e){
     btn.disabled = false; btn.textContent = "জমা দিন";
     $("#err").textContent = "জমা হয়নি: " + (e.code||e.message) + "। ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন।";
@@ -521,7 +533,16 @@ async function paneMe(pane){
     <p class="note">আপনার আগ্রহের ধরন অনুযায়ী (${esc(state.mine.profile.interest)}) সবচেয়ে কম স্কোরের তিনটি ক্ষেত্র:</p>
     <ol class="next">${priorities.map(d=>`<li><b>${esc(d.module)}</b> <span class="chip l${r.domains[d.id].level}">${LEVELS[r.domains[d.id].level].name}</span></li>`).join("")}</ol>
     ${strengths.length?`<p class="note" style="margin-top:14px">আপনার শক্তির জায়গা: ${strengths.map(d=>esc(d.name)).join(", ")}।</p>`:""}
+  </div>
+  <div class="panel" style="margin-top:16px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+      <h3>আপনার জমার ইতিহাস</h3><button class="small" id="retake">আবার মূল্যায়ন দিন</button>
+    </div>
+    <p class="note">আবার দিলে নতুন জমা হিসেবে সংরক্ষিত হবে, আগেরগুলোও থেকে যাবে। লিডারবোর্ডে আপনার সর্বশেষ জমা গণ্য হয়।</p>
+    <div class="scroll"><table class="lb"><thead><tr><th>জমা</th><th>সময়</th><th>স্কোর</th><th>স্তর</th></tr></thead>
+    <tbody>${state.history.map((h,i)=>`<tr class="${i===0?"me":""}"><td>${bn(state.history.length-i)}</td><td>${fmtTime(h.clientTime)}</td><td>${bn(h.result.overall)}</td><td><span class="chip l${h.result.level}">${LEVELS[h.result.level].name}</span></td></tr>`).join("")}</tbody></table></div>
   </div>`;
+  $("#retake").onclick = startRetake;
 }
 
 async function paneLb(pane){
@@ -563,8 +584,13 @@ async function paneSum(pane){
 async function paneAdmin(pane){
   const subs = await backend.allSubmissions();
   const lb = await getLb();
-  const rows = subs.sort((a,b)=>b.result.overall-a.result.overall);
-  const interestCount = {}; rows.forEach(s=>{ const k=s.profile?.interest||"—"; interestCount[k]=(interestCount[k]||0)+1; });
+  // প্রত্যেকের জমা নম্বর (১ = প্রথম জমা)
+  const byUser = {};
+  subs.sort((a,b)=>(a.clientTime||0)-(b.clientTime||0)).forEach(s=>{ const k = s.uid||s.email; byUser[k] = (byUser[k]||0)+1; s._n = byUser[k]; s._of = k; });
+  subs.forEach(s=>{ s._total = byUser[s._of]; });
+  const rows = subs.sort((a,b)=>(b.clientTime||0)-(a.clientTime||0));
+  const latest = rows.filter(s=>s._n===s._total);
+  const interestCount = {}; latest.forEach(s=>{ const k=s.profile?.interest||"—"; interestCount[k]=(interestCount[k]||0)+1; });
   pane.innerHTML = `<div class="panel">
     <h2>দলগত বিশ্লেষণ</h2>
     ${lb.length?cohortHtml(lb):"<p>এখনো কোনো জমা নেই।</p>"}
@@ -572,17 +598,17 @@ async function paneAdmin(pane){
   </div>
   <div class="panel" style="margin-top:16px">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h2>সব জমা (নামসহ)</h2><button class="small" id="csv">CSV ডাউনলোড</button></div>
-    <p class="note">এই অংশ শুধু অ্যাডমিন দেখতে পান।</p>
+    <p class="note">এই অংশ শুধু অ্যাডমিন দেখতে পান। মোট ${bn(rows.length)}টি জমা, ${bn(latest.length)} জন অংশগ্রহণকারী; নতুন জমা উপরে।</p>
     <div class="scroll"><table class="lb admin">
-      <thead><tr><th>নাম</th><th>ইমেইল</th><th>ধারা</th><th>আগ্রহ</th><th>স্কোর</th><th>স্তর</th>${DOMAINS.map(d=>`<th title="${esc(d.name)}">${d.id.toUpperCase()}</th>`).join("")}</tr></thead>
-      <tbody>${rows.map(s=>`<tr><td>${esc(s.profile?.name||"নাম দেননি")}</td><td>${esc(s.email)}</td><td>${esc((s.profile?.streams||[]).join(", "))}</td><td>${esc(s.profile?.interest)}</td><td>${bn(s.result.overall)}</td><td><span class="chip l${s.result.level}">${LEVELS[s.result.level].name}</span></td>${DOMAINS.map(d=>`<td>${bn(s.result.domains[d.id].score)}</td>`).join("")}</tr>`).join("")}</tbody>
+      <thead><tr><th>সময়</th><th>জমা নং</th><th>নাম</th><th>ইমেইল</th><th>ধারা</th><th>আগ্রহ</th><th>স্কোর</th><th>স্তর</th>${DOMAINS.map(d=>`<th title="${esc(d.name)}">${d.id.toUpperCase()}</th>`).join("")}</tr></thead>
+      <tbody>${rows.map(s=>`<tr><td>${fmtTime(s.clientTime)}</td><td>${bn(s._n)}/${bn(s._total)}</td><td>${esc(s.profile?.name||"নাম দেননি")}</td><td>${esc(s.email)}</td><td>${esc((s.profile?.streams||[]).join(", "))}</td><td>${esc(s.profile?.interest)}</td><td>${bn(s.result.overall)}</td><td><span class="chip l${s.result.level}">${LEVELS[s.result.level].name}</span></td>${DOMAINS.map(d=>`<td>${bn(s.result.domains[d.id].score)}</td>`).join("")}</tr>`).join("")}</tbody>
     </table></div>
     <p class="note">D1-D9: ${DOMAINS.map(d=>`${d.id.toUpperCase()} ${esc(d.name)}`).join("; ")}</p>
   </div>`;
   $("#csv").onclick = () => {
-    const head = ["name","email","streams","degree","ssc","experience","interest","hours","overall","level","correct_mcq",...DOMAINS.map(d=>d.id+"_score"),...DOMAINS.map(d=>d.id+"_level"),...SELF.map(s=>s.id),...MCQ.map(q=>q.id+"_correct")];
+    const head = ["submitted_at","entry_no","entries_total","is_latest","name","email","streams","degree","ssc","experience","interest","hours","overall","level","correct_mcq",...DOMAINS.map(d=>d.id+"_score"),...DOMAINS.map(d=>d.id+"_level"),...SELF.map(s=>s.id),...MCQ.map(q=>q.id+"_correct")];
     const lines = rows.map(s=>{ const p=s.profile||{}, r=s.result;
-      return [p.name,s.email,(p.streams||[]).join("|"),p.degree,p.ssc,p.exp,p.interest,p.hours,r.overall,LEVELS[r.level].en,r.correctTotal,
+      return [s.clientTime?new Date(s.clientTime).toISOString():"",s._n,s._total,s._n===s._total?1:0,p.name,s.email,(p.streams||[]).join("|"),p.degree,p.ssc,p.exp,p.interest,p.hours,r.overall,LEVELS[r.level].en,r.correctTotal,
         ...DOMAINS.map(d=>r.domains[d.id].score),...DOMAINS.map(d=>LEVELS[r.domains[d.id].level].en),
         ...SELF.map(x=>s.self?.[x.id]),...MCQ.map(q=>Number(s.answers?.[q.id])===q.c?1:0)]
         .map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(","); });
@@ -602,7 +628,8 @@ async function paneAdmin(pane){
     state.user = u; renderWho();
     if(!u){ renderLogin(); return; }
     app.innerHTML = `<p class="note">লোড হচ্ছে…</p>`;
-    try{ state.mine = await backend.getMine(u.uid); }catch(e){ state.mine = null; }
+    try{ state.history = await backend.getMine(u.uid); }catch(e){ state.history = []; }
+    state.mine = state.history[0] || null;
     if(state.mine) renderResults(); else { state.step = 0; renderForm(); }
   });
 })();
