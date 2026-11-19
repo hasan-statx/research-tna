@@ -382,7 +382,7 @@ function renderProfile(){
   app.innerHTML = `${stepsBar()}
   <div class="panel">
     <h2>পরিচিতি</h2>
-    <label class="f" for="name">পূর্ণ নাম</label>
+    <label class="f" for="name">পূর্ণ নাম (ঐচ্ছিক)</label>
     <input type="text" id="name" value="${esc(p.name||state.user.name||"")}" autocomplete="name">
     <label class="f">শিক্ষার ধারা (একাধিক অপশন প্রযোজ্য)</label>
     <div class="checks">${["কওমি","আলিয়া","জেনারেল"].map(s=>`<label><input type="checkbox" value="${s}" ${p.streams.includes(s)?"checked":""}> ${s}</label>`).join("")}</div>
@@ -404,7 +404,7 @@ function renderProfile(){
     p.exp = $("#exp").value.trim(); p.interest = $("#interest").value; p.hours = $("#hours").value;
     p.streams = [...document.querySelectorAll(".checks input:checked")].map(x=>x.value);
     const missing = [];
-    if(!p.name) missing.push("নাম"); if(!p.streams.length) missing.push("শিক্ষার ধারা");
+    if(!p.streams.length) missing.push("শিক্ষার ধারা");
     if(!p.ssc) missing.push("মাধ্যমিকের বিভাগ"); if(!p.interest) missing.push("আগ্রহ"); if(!p.hours) missing.push("সময়");
     if(missing.length){ $("#err").textContent = "এগুলো পূরণ করুন: " + missing.join(", "); return; }
     state.step = 1; renderForm();
@@ -575,7 +575,7 @@ async function paneAdmin(pane){
     <p class="note">এই অংশ শুধু অ্যাডমিন দেখতে পান।</p>
     <div class="scroll"><table class="lb admin">
       <thead><tr><th>নাম</th><th>ইমেইল</th><th>ধারা</th><th>আগ্রহ</th><th>স্কোর</th><th>স্তর</th>${DOMAINS.map(d=>`<th title="${esc(d.name)}">${d.id.toUpperCase()}</th>`).join("")}</tr></thead>
-      <tbody>${rows.map(s=>`<tr><td>${esc(s.profile?.name)}</td><td>${esc(s.email)}</td><td>${esc((s.profile?.streams||[]).join(", "))}</td><td>${esc(s.profile?.interest)}</td><td>${bn(s.result.overall)}</td><td><span class="chip l${s.result.level}">${LEVELS[s.result.level].name}</span></td>${DOMAINS.map(d=>`<td>${bn(s.result.domains[d.id].score)}</td>`).join("")}</tr>`).join("")}</tbody>
+      <tbody>${rows.map(s=>`<tr><td>${esc(s.profile?.name||"নাম দেননি")}</td><td>${esc(s.email)}</td><td>${esc((s.profile?.streams||[]).join(", "))}</td><td>${esc(s.profile?.interest)}</td><td>${bn(s.result.overall)}</td><td><span class="chip l${s.result.level}">${LEVELS[s.result.level].name}</span></td>${DOMAINS.map(d=>`<td>${bn(s.result.domains[d.id].score)}</td>`).join("")}</tr>`).join("")}</tbody>
     </table></div>
     <p class="note">D1-D9: ${DOMAINS.map(d=>`${d.id.toUpperCase()} ${esc(d.name)}`).join("; ")}</p>
   </div>`;
